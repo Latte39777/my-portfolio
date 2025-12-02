@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SocialLinks from "@/components/SocialLinks";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +23,12 @@ export default function Header() {
         </a>
 
         {/* PC menu */}
-        <nav className="nav-class hidden md:block">
+        <nav className="nav-class ml-auto hidden md:block">
+          {/* 右に配置 */}
           <ul className="flex gap-4">
+            <li>
+              <a href="#top">Top</a>
+            </li>
             <li>
               <a href="#profile">Profile</a>
             </li>
@@ -33,26 +38,7 @@ export default function Header() {
             <li>
               <a href="#contact">Contact</a>
             </li>
-            <li>
-              <a
-                className="twitter"
-                href="https://twitter.com/Latte_iniad8"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Twitter
-              </a>
-            </li>
-            <li>
-              <a
-                className="github"
-                href="https://github.com/Latte39777"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub
-              </a>
-            </li>
+            <SocialLinks />
           </ul>
         </nav>
 
@@ -64,8 +50,9 @@ export default function Header() {
             onClick={closeMenu}
           ></div>
         )}
-        <nav className="nav-class flex md:hidden">
+        <nav className="nav-class ml-auto flex md:hidden">
           <button
+            // className="fixed right-8 bottom-8 z-50"
             className="fixed right-8 bottom-8 z-50"
             onClick={toggleMenu}
             aria-label="Menu Toggle"
@@ -82,9 +69,13 @@ export default function Header() {
             className={`fixed top-0 right-0 z-40 flex h-full w-1/3 flex-col justify-end p-8 pb-24 duration-300 ease-in-out dark:bg-black ${
               isOpen ? "translate-x-0" : "translate-x-full"
             }`}
+            onClick={closeMenu}
           >
             {/* ここで縦並び (flex-col) を指定 */}
             <ul className="flex flex-col items-center gap-8">
+              <li>
+                <a href="#top">Top</a>
+              </li>
               <li>
                 <a href="#profile">Profile</a>
               </li>
@@ -94,26 +85,7 @@ export default function Header() {
               <li>
                 <a href="#contact">Contact</a>
               </li>
-              <li>
-                <a
-                  className="twitter"
-                  href="https://twitter.com/Latte_iniad8"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a
-                  className="github"
-                  href="https://github.com/Latte39777"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub
-                </a>
-              </li>
+              <SocialLinks />
             </ul>
           </div>
         </nav>
