@@ -1,29 +1,22 @@
-import {
-  FaSquareGithub,
-  FaSquareXTwitter,
-  FaSquareYoutube,
-} from "react-icons/fa6";
-
-// href="https://twitter.com/Latte_iniad8"
-// href="https://github.com/Latte39777"
+import { Icons } from "@/components/ui/icons";
 
 const SOCIAL_ITEMS = [
   {
     name: "GitHub",
     href: "https://github.com/Latte39777",
-    icon: <FaSquareGithub size={30} />,
+    icon: <Icons.github size={30} />,
     color: "",
   },
   {
     name: "Twitter",
     href: "https://twitter.com/Latte_iniad8",
-    icon: <FaSquareXTwitter size={30} />,
+    icon: <Icons.twitter size={30} />,
     color: "",
   },
   {
     name: "YouTube",
     href: "https://www.youtube.com/examplechannel",
-    icon: <FaSquareYoutube size={30} />,
+    icon: <Icons.youtube size={30} />,
     color: "",
   },
 ];

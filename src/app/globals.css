@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* グリッドのスタイル定義 */
+.moving-grid {
+  transform: rotate(-4deg);
+  /* グリッドの1マスのサイズ */
+  background-size: 40px 40px;
+
+  /* 方眼紙の線を描画 (色は薄いグレー) */
+  background-image:
+    linear-gradient(to right, #e6e6e6 1px, transparent 1px),
+    linear-gradient(to bottom, #e6e6e6 1px, transparent 1px);
+
+  /* アニメーション設定 (線形、無限ループ) */
+  animation: scrollGrid 2s linear infinite;
+}
+
+.particle {
+  opacity: 0;
+}
+
+@keyframes floatLeft {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(20px) translateX(-120vw);
+    opacity: 0;
+  }
+}
+
+@layer utilities {
+  /* Chrome, Safari, Edge */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Firefox */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+}
+
+/* アニメーション定義 */
+@keyframes scrollGrid {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    /* 重要: background-sizeと同じ値に移動させる */
+    background-position: 40px 40px;
+  }
+}
