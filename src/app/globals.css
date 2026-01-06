@@ -44,6 +44,18 @@ body {
   opacity: 0;
 }
 
+@layer utilities {
+  @keyframes floatLeft {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      /* 左へ移動しながら、少し上に揺らぐ */
+      transform: translateX(-120vw) translateY(-20px);
+    }
+  }
+}
+
 @keyframes floatLeft {
   0% {
     transform: translateY(0) translateX(0);
