@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import FrameBorder from "@/components/layout/FrameBorder";
+import { Inter, M_PLUS_Rounded_1c } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,6 +13,13 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const mPlusRounded = M_PLUS_Rounded_1c({
+  weight: ["400", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-rounded",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -28,11 +36,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={noScrollbar} suppressHydrationWarning={true}>
+    <html
+      lang="ja"
+      className={`${noScrollbar} ${mPlusRounded.variable}`}
+      suppressHydrationWarning={true}
+    >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} no-scrollbar antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} no-scrollbar font-sans antialiased`}
       >
-        <FrameBorder></FrameBorder>
+        {/* <FrameBorder></FrameBorder> */}
         <Header />
         <main>{children}</main>
       </body>

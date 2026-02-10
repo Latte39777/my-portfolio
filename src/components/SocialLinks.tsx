@@ -15,7 +15,7 @@ const SOCIAL_ITEMS = [
   },
   {
     name: "YouTube",
-    href: "https://www.youtube.com/examplechannel",
+    href: "https://www.youtube.com/channel/UCpkkMTjHvE0KDgU0lZn5EXQ",
     icon: <Icons.youtube size={30} />,
     color: "",
   },

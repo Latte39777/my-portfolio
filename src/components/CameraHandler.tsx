@@ -1,76 +1,115 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
-import { useScroll } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useProgress, useScroll } from "@react-three/drei";
 import * as THREE from "three";
 
-export function CameraHandler() {
+export default function CameraHandler() {
   const scroll = useScroll();
+  const { progress } = useProgress(); // ロード進捗
+  const { width } = useThree((state) => state.size);
+  const isMobile = width < 768;
+
+  const pcOffset = !isMobile && width < 1200 ? (1200 - width) * 0.01 : 0;
+
+  const commonOffset = width < 1200 ? (1200 - width) * 0.01 : 0;
+
   const vec = new THREE.Vector3();
 
-  // --- 📍 キーポイント（カメラの座標リスト） ---
-  // 1. スタート位置（遠く）
-  const posStart = new THREE.Vector3(6, 5, 5);
-  const lookStart = new THREE.Vector3(0, 0, 0);
+  // 1. Top初期位置
+  const posStart = isMobile
+    ? new THREE.Vector3(6.5, 4, 3)
+    : new THREE.Vector3(
+        0.5 + pcOffset * 1.5,
+        3 + pcOffset,
+        6 + pcOffset * 0.05
+      );
 
-  // 2. Topセクション（デスクに寄って止まる位置）
-  const posTop = new THREE.Vector3(2, 0.5, 1);
-  const lookTop = new THREE.Vector3(-3, 1, 0);
+  const lookStart = isMobile
+    ? new THREE.Vector3(0, 0, 0)
+    : new THREE.Vector3(0.5 - pcOffset, 0.5 - pcOffset, 0 - pcOffset * 1.1);
 
-  // 3. Worksセクション（横に移動して止まる位置）
-  const posWorks = new THREE.Vector3(4, 2, 3);
-  const lookWorks = new THREE.Vector3(0, 0, 0);
+  // 2. Works
+  const posWorks = isMobile
+    ? new THREE.Vector3(0, 3, 2)
+    : new THREE.Vector3(1, 1.5, 1 + pcOffset * 0.2);
 
-  // 4. Contactセクション（上から見下ろす位置）
-  const posContact = new THREE.Vector3(-2, 3, 4);
-  const lookContact = new THREE.Vector3(0, 0, 0);
+  const lookWorks = isMobile
+    ? new THREE.Vector3(-2, 0, 0)
+    : new THREE.Vector3(-3, 1, 0);
 
-  useFrame((state, delta) => {
-    // scroll.range(開始位置, 長さ) -> その区間の進捗率を 0〜1 で返す関数
+  // 3. Profile
+  const posProfile = isMobile
+    ? new THREE.Vector3(2, 1, 1.5)
+    : new THREE.Vector3(
+        0.7 + pcOffset * 0.2,
+        0.4 + pcOffset * 0.25,
+        0.6 + pcOffset * 0.15
+      );
 
-    // --- 🎬 フェーズ1: スタート → Topへズーム (0% 〜 20%) ---
-    // ここで「移動」する
-    const r1 = scroll.range(0, 0.2);
-    if (r1 > 0 && r1 < 1) {
-      // posStart から posTop へ、r1 の割合だけ移動
-      state.camera.position.lerpVectors(posStart, posTop, r1);
+  const lookProfile = isMobile
+    ? new THREE.Vector3(-5, -1, -5)
+    : new THREE.Vector3(-5, -1 - pcOffset * 0.2, -5);
 
-      // 視点も滑らかに変える（LookAtは直接補間できないので、Target座標を補間して向かせる）
-      vec.lerpVectors(lookStart, lookTop, r1);
-      state.camera.lookAt(vec);
+  // 4. Skills
+  const posSkills = new THREE.Vector3(
+    0.3 - commonOffset * 0.05,
+    2.5,
+    -0.5 - commonOffset * 0.05
+  );
+
+  const lookSkills = new THREE.Vector3(3, -10, -3);
+
+  // 5. Contact & Footer
+  const posContact = new THREE.Vector3(
+    1.7 - commonOffset * 0.01,
+    2 + commonOffset * 0.2,
+    2.7 + commonOffset * 0.1
+  );
+
+  const lookContact = new THREE.Vector3(1, -3.5 - commonOffset * 0.25, -6);
+
+  useFrame((state) => {
+    // ロードが終わるまでは初期位置に固定
+    if (progress < 100) {
+      state.camera.position.copy(posStart);
+      state.camera.lookAt(lookStart);
+      return;
     }
 
-    // --- ⏸ フェーズ2: Topで「停止」 (20% 〜 40%) ---
-    // ここはコンテンツをじっくり見る時間。カメラは posTop に固定（または超微細に動かす）
-    const r2 = scroll.range(0.2, 0.2); // 長さ0.2
-    if (r2 > 0 && r2 < 1) {
-      // 固定（厳密には微調整を入れてもいいが、まずは固定でOK）
-      state.camera.position.copy(posTop);
-      state.camera.lookAt(lookTop);
+    // --- スクロール演出のタイムライン設計 ---
+    // r1: 0.1から0.1の距離で移動 (0.1〜0.2で動く。それ以降は1で固定)
+    const r1 = scroll.range(0.1, 0.1);
+    // r2: 0.3から0.1の距離で移動 (0.3〜0.4で動く)
+    const r2 = scroll.range(0.3, 0.1);
+    // r3: 0.5から0.1の距離で移動 (0.5〜0.6で動く)
+    const r3 = scroll.range(0.5, 0.1);
+    // r4: 0.7から0.1の距離で移動 (0.7〜0.8で動く)
+    const r4 = scroll.range(0.7, 0.1);
+
+    // 1. まず Top -> Works の移動を適用
+    state.camera.position.lerpVectors(posStart, posWorks, r1);
+    vec.lerpVectors(lookStart, lookWorks, r1);
+
+    // 2. r2 が動き出したら Works -> Profile へ上書き移動
+    if (r2 > 0) {
+      state.camera.position.lerpVectors(posWorks, posProfile, r2);
+      vec.lerpVectors(lookWorks, lookProfile, r2);
     }
 
-    // --- 🎬 フェーズ3: Top → Worksへ移動 (40% 〜 60%) ---
-    const r3 = scroll.range(0.4, 0.2);
-    if (r3 > 0 && r3 < 1) {
-      state.camera.position.lerpVectors(posTop, posWorks, r3);
-      vec.lerpVectors(lookTop, lookWorks, r3);
-      state.camera.lookAt(vec);
+    // 3. r3 が動き出したら Profile -> Skills へ上書き移動
+    if (r3 > 0) {
+      state.camera.position.lerpVectors(posProfile, posSkills, r3);
+      vec.lerpVectors(lookProfile, lookSkills, r3);
     }
 
-    // --- ⏸ フェーズ4: Worksで「停止」 (60% 〜 80%) ---
-    const r4 = scroll.range(0.6, 0.2);
-    if (r4 > 0 && r4 < 1) {
-      state.camera.position.copy(posWorks);
-      state.camera.lookAt(lookWorks);
+    // 4. r4 が動き出したら Skills -> Contact へ上書き移動
+    if (r4 > 0) {
+      state.camera.position.lerpVectors(posSkills, posContact, r4);
+      vec.lerpVectors(lookSkills, lookContact, r4);
     }
 
-    // --- 🎬 フェーズ5: Works → Contactへ移動 (80% 〜 100%) ---
-    const r5 = scroll.range(0.8, 0.2);
-    if (r5 > 0) {
-      state.camera.position.lerpVectors(posWorks, posContact, r5);
-      vec.lerpVectors(lookWorks, lookContact, r5);
-      state.camera.lookAt(vec);
-    }
+    state.camera.lookAt(vec);
   });
 
   return null;
