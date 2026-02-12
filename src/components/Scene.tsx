@@ -27,10 +27,7 @@ function ColorShift() {
 
   useFrame((state) => {
     const offset = scroll.offset;
-    // 0.45(Works後) から 0.7(Vision開始) にかけて色を変える
     const t = THREE.MathUtils.smoothstep(offset, 0.45, 0.7);
-
-    // 背景色を滑らかに変更
     state.scene.background = colorBlue.clone().lerp(colorPink, t);
   });
   return null;
@@ -43,14 +40,33 @@ export default function Scene() {
     <Canvas
       shadows
       camera={{ position: [5, 5, 5], fov: 45 }}
-      dpr={[1, 1.5]}
-      gl={{ localClippingEnabled: true }}
+      dpr={[1, 2]}
+      gl={{
+        localClippingEnabled: true,
+        antialias: true,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 1.0,
+        outputColorSpace: THREE.SRGBColorSpace,
+      }}
     >
-      <ambientLight intensity={isDark ? 0.1 : 1.5} />
-      <pointLight position={[-10, -5, -10]} intensity={isDark ? 0.2 : 1} />
+      <ambientLight
+        key={`ambientLight-${isDark}`}
+        intensity={isDark ? 1.5 : 1.5}
+        color={isDark ? "#7979b6" : "#ffffff"}
+      />
+      <pointLight
+        key={`point-${theme}`}
+        position={[-10, -5, -10]}
+        intensity={isDark ? 1 : 1}
+        color="#ffffff"
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+      />
       <Environment
+        key={`env-${theme}`}
         preset={isDark ? "night" : "city"}
-        environmentIntensity={isDark ? 0.2 : 1}
+        environmentIntensity={isDark ? 1 : 1}
+        background={false}
       />
 
       <Suspense fallback={null}>

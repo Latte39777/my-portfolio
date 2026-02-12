@@ -1,5 +1,6 @@
 "use client";
 
+import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
 
 const codingSkills = [
@@ -32,14 +33,12 @@ export default function Skills() {
         // 茶色テーマで統一
         className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 p-8 text-white shadow-2xl backdrop-blur-md md:p-12"
       >
-        <h2 className="mb-8 text-center text-4xl font-black tracking-widest text-orange-100 drop-shadow-sm">
-          SKILLS
-        </h2>
+        <h2 className={`${TYPO.h2} mb-8 text-center`}>SKILLS</h2>
 
         <div className="grid gap-10 md:grid-cols-2">
           {/* Coding */}
           <div>
-            <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-orange-200">
+            <h3 className={`${TYPO.h3} mb-6 flex items-center gap-2`}>
               <span className="opacity-80">💻</span> Coding
             </h3>
             <div className="flex flex-col gap-5">
@@ -64,7 +63,7 @@ export default function Skills() {
 
           {/* Creator */}
           <div>
-            <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-orange-200">
+            <h3 className={`${TYPO.h3} mb-6 flex items-center gap-2`}>
               <span className="opacity-80">🎨</span> Creator
             </h3>
             <div className="flex flex-col gap-5">
@@ -88,7 +87,7 @@ export default function Skills() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/5 pt-6 text-center text-[10px] font-bold tracking-[0.3em] text-orange-200/40 uppercase">
+        <div className={`mt-10 ${TYPO.label}`}>
           Also learning: AWS, Docker, Unity, Unreal Engine
         </div>
       </motion.div>

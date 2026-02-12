@@ -5,7 +5,7 @@ Command: npx gltfjsx@6.5.3 public/Room.glb --types
 
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
-import { useLayoutEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { ThreeElements } from "@react-three/fiber";
 import { useRoomAnimation } from "@/components/useRoomAnimation";
@@ -95,39 +95,27 @@ type GLTFResult = GLTF & {
   animations: GLTFAction[];
 };
 
-export function Model(props: Props & ThreeElements["group"]) {
-  // const { nodes, materials } = useGLTF("/Room.glb") as unknown as GLTFResult;
+useGLTF.setDecoderPath(
+  "https://www.gstatic.com/draco/versioned/decoders/1.5.5/"
+);
 
+export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
   const { nodes, materials } = useGLTF(
-    "/Room-draco.glb",
-    "https://www.gstatic.com/draco/versioned/decoders/1.5.5/"
+    "/Room-draco.glb"
   ) as unknown as GLTFResult;
 
   const roomRef = useRef<THREE.Group>(null);
-
   useRoomAnimation(roomRef);
 
-  const texture = useTexture("/PC_Bake.webp");
+  const rawTexture = useTexture("/PC_Bake.webp");
   const pcTexture = useMemo(() => {
-    if (!texture) return null;
-    const t = texture.clone();
+    if (!rawTexture) return null;
+    const t = rawTexture.clone();
     t.flipY = false;
     t.anisotropy = 16;
+    t.needsUpdate = true;
     return t;
-  }, [texture]);
-
-  useLayoutEffect(() => {
-    Object.keys(materials).forEach((key) => {
-      const mat = materials[key] as THREE.MeshStandardMaterial;
-      if (mat) {
-        const toonMaterial = new THREE.MeshToonMaterial({
-          color: mat.color,
-          map: mat.map,
-        });
-        (materials as Record<string, unknown>)[key] = toonMaterial;
-      }
-    });
-  }, [materials, pcTexture]);
+  }, [rawTexture]);
 
   return (
     <group ref={roomRef} {...props} dispose={null}>
@@ -171,45 +159,83 @@ export function Model(props: Props & ThreeElements["group"]) {
         />
         {/* 時計の文字盤の位置に配置 */}
         <DigitalClock />
+        {/* 発光パネル（平面） */}
+        <mesh position={[0, 0, 0.0505]}>
+          <planeGeometry args={[0.23, 0.12]} />
+          <meshStandardMaterial
+            color="#c0c0c0"
+            emissive={"#cbcbcb"}
+            emissiveIntensity={3}
+            transparent
+          />
+        </mesh>
+        {isDark && (
+          <spotLight
+            position={[0, 0, 0]} // ライトの出どころ
+            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+            intensity={0.1} // 明るさ
+            angle={Math.PI / 2} // ライトの広がり具合
+            penumbra={0.5} // ライトの中心から縁への減衰具合
+            distance={0.2} // ライトの届く距離
+            color="#d5d5d5"
+            castShadow
+            onUpdate={(self) => {
+              self.target.position.set(1, 0, 0.0505); // 照らしたい座標（机）
+              self.target.updateMatrixWorld(); // 向きを即座に計算
+            }}
+          />
+        )}
       </group>
       {/* can1 */}
-      <group position={[-1.158, 1.074, 1.223]} rotation={[-0.332, 0, Math.PI]}>
-        <mesh
-          geometry={nodes.立方体046.geometry}
-          material={nodes.立方体046.material}
-        />
-        <mesh
-          geometry={nodes.立方体046_1.geometry}
-          material={materials.silber}
-        />
-        <mesh
-          geometry={nodes.立方体046_2.geometry}
-          material={materials.orange}
-        />
-      </group>
+      {isDark && (
+        <group
+          position={[-1.158, 1.074, 1.223]}
+          rotation={[-0.332, 0, Math.PI]}
+        >
+          <mesh
+            geometry={nodes.立方体046.geometry}
+            material={nodes.立方体046.material}
+          />
+          <mesh
+            geometry={nodes.立方体046_1.geometry}
+            material={materials.silber}
+          />
+          <mesh
+            geometry={nodes.立方体046_2.geometry}
+            material={materials.orange}
+          />
+        </group>
+      )}
       {/* can2 */}
-      <group
-        position={[-1.225, 1.074, 1.119]}
-        rotation={[-0.404, -0.594, 2.907]}
-      >
-        <mesh
-          geometry={nodes.立方体024.geometry}
-          material={nodes.立方体024.material}
-        />
-        <mesh
-          geometry={nodes.立方体024_1.geometry}
-          material={materials.silber}
-        />
-        <mesh
-          geometry={nodes.立方体024_2.geometry}
-          material={materials.orange}
-        />
-      </group>
+      {isDark && (
+        <group
+          position={[-1.225, 1.074, 1.119]}
+          rotation={[-0.404, -0.594, 2.907]}
+        >
+          <mesh
+            geometry={nodes.立方体024.geometry}
+            material={nodes.立方体024.material}
+          />
+          <mesh
+            geometry={nodes.立方体024_1.geometry}
+            material={materials.silber}
+          />
+          <mesh
+            geometry={nodes.立方体024_2.geometry}
+            material={materials.orange}
+          />
+        </group>
+      )}
       {/* cap */}
-      <group position={[-1.158, 1.036, 1.138]}>
-        <mesh geometry={nodes.円柱018.geometry} material={materials.orange} />
-        <mesh geometry={nodes.円柱018_1.geometry} material={materials.white} />
-      </group>
+      {!isDark && (
+        <group position={[-1.158, 1.036, 1.138]}>
+          <mesh geometry={nodes.円柱018.geometry} material={materials.orange} />
+          <mesh
+            geometry={nodes.円柱018_1.geometry}
+            material={materials.white}
+          />
+        </group>
+      )}
       {/* mike */}
       <group
         position={[-1.314, 1.064, 0.907]}
@@ -241,9 +267,24 @@ export function Model(props: Props & ThreeElements["group"]) {
             monitorId={0}
             width={0.61} // 3. 赤い板が左右にはみ出ないかチェック
             height={0.36} // 4. 赤い板が上下にはみ出ないかチェック
-            debug={true}
           />
         </group>
+        {isDark && (
+          <spotLight
+            position={[0.02, 0.085, 0]} // ライトの出どころ
+            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+            intensity={0.5} // 明るさ
+            angle={Math.PI / 2} // ライトの広がり具合
+            penumbra={0.2} // ライトの中心から縁への減衰具合
+            distance={0.4} // ライトの届く距離
+            color="#d5d5d5"
+            castShadow
+            onUpdate={(self) => {
+              self.target.position.set(0.12, 0.185, 0); // 照らしたい座標（机）
+              self.target.updateMatrixWorld(); // 向きを即座に計算
+            }}
+          />
+        )}
       </group>
       {/* sub_monitor */}
       <group position={[-1.186, 1.18, -0.163]} rotation={[0.002, -0.49, 0.07]}>
@@ -261,12 +302,28 @@ export function Model(props: Props & ThreeElements["group"]) {
         />
         <group position={[0.027, 0.08, 0]} rotation={[0, Math.PI / 2, 0]}>
           <MonitorContent
+            isDark={isDark}
             monitorId={1}
             width={0.61} // 3. 赤い板が左右にはみ出ないかチェック
             height={0.36} // 4. 赤い板が上下にはみ出ないかチェック
-            debug={true}
           />
         </group>
+        {isDark && (
+          <spotLight
+            position={[0.027, 0.08, 0]} // ライトの出どころ
+            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+            intensity={0.5} // 明るさ
+            angle={Math.PI / 2} // ライトの広がり具合
+            penumbra={0.2} // ライトの中心から縁への減衰具合
+            distance={0.4} // ライトの届く距離
+            color="#d5d5d5"
+            castShadow
+            onUpdate={(self) => {
+              self.target.position.set(0.077, 0.08, 0); // 照らしたい座標（机）
+              self.target.updateMatrixWorld(); // 向きを即座に計算
+            }}
+          />
+        )}
       </group>
       {/* pc */}
       <group position={[-0.7, 0.7, -0.1]}>
@@ -305,6 +362,9 @@ export function Model(props: Props & ThreeElements["group"]) {
             <mesh geometry={nodes.立方体007_8.geometry}>
               <meshStandardMaterial map={pcTexture} />
             </mesh>
+            {isDark && (
+              <pointLight intensity={0.2} distance={0.3} decay={2}></pointLight>
+            )}
           </group>
           {/* pc_glass */}
           <mesh
@@ -382,37 +442,45 @@ export function Model(props: Props & ThreeElements["group"]) {
               material={materials.black}
             />
           </group>
-          {/* record_detail_on */}
-          <group
-            position={[0.527, 1.113, -1.19]}
-            rotation={[1.566, -0.063, 0.597]}
-          >
-            <mesh geometry={nodes.円004.geometry} material={materials.silber} />
-            <mesh
-              geometry={nodes.円004_1.geometry}
-              material={materials.orange}
-            />
-            <mesh
-              geometry={nodes.円004_2.geometry}
-              material={nodes.円004_2.material}
-            />
-          </group>
           {/* record_detail_off */}
-          <group position={[0.58, 1.115, -1.166]}>
-            <mesh
-              geometry={nodes.円002.geometry}
-              material={nodes.円002.material}
-            />
-            <mesh
-              geometry={nodes.円002_1.geometry}
-              material={materials.silber}
-            />
-            <mesh
-              geometry={nodes.円002_2.geometry}
-              material={materials.orange}
-            />
-          </group>
-          <MusicParticles />
+          {/* record_detail_on */}
+          {!isDark ? (
+            <>
+              <group
+                position={[0.527, 1.113, -1.19]}
+                rotation={[1.566, -0.063, 0.597]}
+              >
+                <mesh
+                  geometry={nodes.円004.geometry}
+                  material={materials.silber}
+                />
+                <mesh
+                  geometry={nodes.円004_1.geometry}
+                  material={materials.orange}
+                />
+                <mesh
+                  geometry={nodes.円004_2.geometry}
+                  material={nodes.円004_2.material}
+                />
+              </group>
+              <MusicParticles />
+            </>
+          ) : (
+            <group position={[0.58, 1.115, -1.166]}>
+              <mesh
+                geometry={nodes.円002.geometry}
+                material={nodes.円002.material}
+              />
+              <mesh
+                geometry={nodes.円002_1.geometry}
+                material={materials.silber}
+              />
+              <mesh
+                geometry={nodes.円002_2.geometry}
+                material={materials.orange}
+              />
+            </group>
+          )}
         </group>
       </group>
       {/* bed_main */}
@@ -425,17 +493,20 @@ export function Model(props: Props & ThreeElements["group"]) {
         <mesh geometry={nodes.立方体058_2.geometry} material={materials.blue} />
       </group>
       {/* bed_detail_on */}
-      <mesh
-        geometry={nodes.bedOn.geometry}
-        material={materials["light blue"]}
-        position={[1.989, 0.533, -0.62]}
-      />
       {/* bed_detail_off */}
-      <mesh
-        geometry={nodes.bedOff.geometry}
-        material={materials["light blue"]}
-        position={[1.592, 0.569, -0.822]}
-      />
+      {isDark ? (
+        <mesh
+          geometry={nodes.bedOn.geometry}
+          material={materials["light blue"]}
+          position={[1.989, 0.533, -0.62]}
+        />
+      ) : (
+        <mesh
+          geometry={nodes.bedOff.geometry}
+          material={materials["light blue"]}
+          position={[1.592, 0.569, -0.822]}
+        />
+      )}
       {/* circle_carpet_gray */}
       <mesh
         geometry={nodes.carpet1.geometry}
@@ -460,11 +531,32 @@ export function Model(props: Props & ThreeElements["group"]) {
         geometry={nodes.desk.geometry}
         material={materials.brown}
         position={[1.137, 0.229, 0.642]}
+        castShadow
       />
       {/* light */}
       <group position={[1.035, 0.579, 0.485]} rotation={[0, -0.448, 0.396]}>
-        <mesh geometry={nodes.円柱011.geometry} material={materials.white} />
+        <mesh
+          geometry={nodes.円柱011.geometry}
+          material={materials.white}
+          castShadow
+        />
         <mesh geometry={nodes.円柱011_1.geometry} material={materials.brown} />
+        {isDark && (
+          <spotLight
+            position={[0, -0.079, 0]} // ライトの出どころ
+            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+            intensity={1} // 明るさ
+            angle={Math.PI / 3} // ライトの広がり具合
+            penumbra={0.2} // ライトの中心から縁への減衰具合
+            distance={0.4} // ライトの届く距離
+            color="#d5d5d5"
+            castShadow
+            onUpdate={(self) => {
+              self.target.position.set(1.137, 0.229, 0.642); // 照らしたい座標（机）
+              self.target.updateMatrixWorld(); // 向きを即座に計算
+            }}
+          />
+        )}
       </group>
       {/* rimo */}
       <group
@@ -484,9 +576,20 @@ export function Model(props: Props & ThreeElements["group"]) {
           geometry={nodes.立方体019_3.geometry}
           material={materials.orange}
         />
+        {/* 発光 */}
+        <mesh position={[0, 0.002, -0.035]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.05, 0.035]} />
+          <meshStandardMaterial
+            color="#c0c0c0"
+            emissive={"#cbcbcb"}
+            emissiveIntensity={3}
+            transparent
+            side={THREE.DoubleSide}
+          />
+        </mesh>
       </group>
     </group>
   );
 }
 
-useGLTF.preload("/Room.glb");
+useGLTF.preload("/Room-draco.glb");

@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 
 const ThemeToggle = dynamic(() => import("@/components/ThemeToggle"), {
   ssr: false,
+  loading: () => <div className="h-6 w-[72px]" />,
 });
 
 export default function MobileMenu() {
@@ -57,33 +58,37 @@ export default function MobileMenu() {
 
       {/* --- かまぼこメニュー（茶色テーマ） --- */}
       <nav
-        className={`fixed right-0 bottom-0 left-0 z-50 mx-auto w-[94%] max-w-sm rounded-t-[3rem] border-x border-t border-white/20 bg-[#5d4037]/95 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+        className={`fixed right-0 bottom-0 left-0 z-50 mx-auto w-[94%] max-w-sm rounded-t-[2.5rem] border-x border-t border-white/20 bg-[#5d4037]/95 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="flex flex-col items-center p-8 pb-12">
-          {/* 上段：SNS & トグル */}
-          <div className="mb-8 flex w-full items-center justify-between border-b border-white/5 px-2 pb-6">
-            <div className="scale-90">
+        {/* 全体のパディングを 8 -> 6、12 -> 8 に縮小 */}
+        <div className="flex flex-col items-center p-6 pb-8">
+          {/* 上段：SNS & トグル (mb-8 -> 4, pb-6 -> 4 に縮小) */}
+          <div className="mb-4 flex w-full items-center justify-between border-b border-white/5 px-2 pb-4">
+            <div className="origin-left scale-75">
+              {" "}
+              {/* 少し小さくして余白を節約 */}
               <SocialLinks />
             </div>
             <ThemeToggle />
           </div>
 
-          {/* 下段：コンタクトボタン */}
+          {/* 下段：コンタクトボタン (py-4 -> 3.5 に微調整) */}
           <div className="w-full px-2">
             <a
               href="#contact"
-              className="block w-full rounded-full bg-white py-4 text-center text-[11px] font-black tracking-[0.2em] text-[#5d4037] uppercase shadow-xl transition-transform active:scale-95"
+              className="block w-full rounded-full bg-white py-3.5 text-center text-[10px] font-black tracking-[0.2em] text-[#5d4037] uppercase shadow-xl transition-transform active:scale-95"
               onClick={() => setIsOpen(false)}
             >
               Contact Me
             </a>
           </div>
 
+          {/* 閉じるボタン (mt-8 -> 4 に縮小) */}
           <button
             onClick={() => setIsOpen(false)}
-            className="mt-8 text-[9px] font-bold tracking-[0.4em] text-orange-200/40 uppercase transition-colors hover:text-orange-100"
+            className="mt-6 text-[9px] font-bold tracking-[0.4em] text-orange-200/40 uppercase transition-colors hover:text-orange-100"
           >
             Close Menu
           </button>

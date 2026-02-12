@@ -1,29 +1,41 @@
-export default function FrameBorder() {
+"use client";
+
+type Props = {
+  isDark: boolean;
+};
+
+export default function FrameBorder({ isDark }: Props) {
   const gap = "mx-2 md:mx-4 my-0";
+  const textColor = isDark ? "text-[#000000]" : "text-[#FFFFFF]";
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-50 ${gap} overflow-hidden`}
+      className={`pointer-events-none fixed inset-0 z-50 ${gap} overflow-hidden ${textColor} transition-colors duration-500`}
     >
+      {/* Top Left */}
       <div className="absolute top-0 left-0">
-        <span className={`absolute top-1 left-1 text-2xl whitespace-nowrap`}>
+        <span className="absolute top-1 left-1 text-2xl font-bold whitespace-nowrap">
           - - - - - - - - - - - -
         </span>
       </div>
+
+      {/* Top Right */}
       <div className="absolute top-0 right-3">
-        <div
-          className={`absolute top-1 right-1 flex items-center gap-2 text-2xl whitespace-nowrap`}
-        >
+        <div className="absolute top-1 right-1 flex items-center gap-2 text-2xl font-bold whitespace-nowrap">
           × × ×
         </div>
       </div>
+
+      {/* Bottom Left */}
       <div className="absolute bottom-0 left-0">
-        <span className={`absolute bottom-1 left-1 text-2xl whitespace-nowrap`}>
+        <span className="absolute bottom-1 left-1 text-2xl font-bold whitespace-nowrap">
           × × ×
         </span>
       </div>
+
+      {/* Bottom Right */}
       <div className="absolute right-3 bottom-0 text-right">
-        <div className={`absolute right-1 bottom-1 text-2xl whitespace-nowrap`}>
+        <div className="absolute right-1 bottom-1 text-2xl font-bold whitespace-nowrap">
           - - - - - - - - - - - -
         </div>
       </div>

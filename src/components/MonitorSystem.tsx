@@ -16,10 +16,10 @@ const SHARED_SHAPES = Array.from({ length: SHARED_COUNT }, (_, i) => ({
 }));
 
 export function MonitorContent({
+  isDark = false,
   monitorId = 0,
   width = 0.6,
   height = 0.4,
-  debug = false,
 }) {
   const groupRef = useRef<THREE.Group>(null);
 
@@ -60,7 +60,7 @@ export function MonitorContent({
     const halfH = height / 2;
 
     groupRef.current.children.forEach((child, i) => {
-      if (debug && i === SHARED_COUNT) return;
+      if (i === SHARED_COUNT) return;
 
       const s = SHARED_SHAPES[i];
       const cycleDuration = 8;
@@ -93,24 +93,26 @@ export function MonitorContent({
             <circleGeometry args={[s.size, 32]} />
           )}
           <meshStandardMaterial
-            color="#00abab"
-            emissive="#00cece"
-            emissiveIntensity={15}
+            color="#00ffff"
+            emissive="#51ffff"
+            emissiveIntensity={3}
             toneMapped={false}
             transparent
-            opacity={0.5}
-            clippingPlanes={clippingPlanes} // ★ 同期された切り取り線を適用
+            clippingPlanes={clippingPlanes}
             clipShadows={true}
           />
         </mesh>
       ))}
 
-      {debug && (
-        <mesh position={[0, 0, 0]}>
-          <planeGeometry args={[width, height]} />
-          <meshStandardMaterial color="#ffffff" transparent opacity={0.1} />
-        </mesh>
-      )}
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[width, height]} />
+        <meshStandardMaterial
+          color="#c0c0c0"
+          emissive={"#cbcbcb"}
+          emissiveIntensity={3}
+          transparent
+        />
+      </mesh>
     </group>
   );
 }

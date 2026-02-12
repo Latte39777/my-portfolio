@@ -1,7 +1,7 @@
 "use client";
 
+import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
-
 export default function Contact() {
   return (
     <section
@@ -16,9 +16,8 @@ export default function Contact() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-center text-white shadow-2xl backdrop-blur-md md:px-10 md:py-16"
       >
-        <h2 className="mb-6 text-4xl font-black tracking-widest text-orange-100 drop-shadow-sm">
-          CONTACT
-        </h2>
+        {/* セクションタイトル: TYPO.h2 */}
+        <h2 className={`${TYPO.h2} mb-6`}>CONTACT</h2>
 
         <form
           action="https://api.web3forms.com/submit"
@@ -36,8 +35,9 @@ export default function Contact() {
             value="Portfolioからの問い合わせ"
           />
 
+          {/* 各入力項目のラベル: TYPO.label */}
           <div>
-            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
+            <label className={`${TYPO.label} ml-2 text-orange-200/60`}>
               Name
             </label>
             <input
@@ -50,7 +50,7 @@ export default function Contact() {
           </div>
 
           <div>
-            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
+            <label className={`${TYPO.label} ml-2 text-orange-200/60`}>
               Email
             </label>
             <input
@@ -63,7 +63,7 @@ export default function Contact() {
           </div>
 
           <div>
-            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
+            <label className={`${TYPO.label} ml-2 text-orange-200/60`}>
               Message
             </label>
             <textarea
@@ -83,18 +83,20 @@ export default function Contact() {
           </button>
         </form>
 
-        {/* フォールバックの連絡先 */}
-        <div className="mt-8 space-y-2 border-t border-white/5 pt-6 text-[10px] font-bold text-orange-200/40">
-          <p className="tracking-widest">
+        {/* フォールバック・コピーライト: TYPO.label */}
+        <div className="mt-8 space-y-2 border-t border-white/5 pt-6">
+          <p className={`${TYPO.label} tracking-widest text-orange-200/40`}>
             OR EMAIL:{" "}
             <a
               href="mailto:latte.works.4649@gmail.com"
-              className="hover:text-orange-200"
+              className="underline underline-offset-4 hover:text-orange-200"
             >
               latte.works.4649@gmail.com
             </a>
           </p>
-          <p className="tracking-[0.5em] uppercase">© 2026 Kotaro Misawa</p>
+          <p className={`${TYPO.label} tracking-[0.5em]`}>
+            © 2026 Kotaro Misawa
+          </p>
         </div>
       </motion.div>
     </section>

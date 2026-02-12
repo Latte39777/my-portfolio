@@ -5,7 +5,13 @@ import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import * as THREE from "three";
 
-function SingleNote({ texture, position }: any) {
+function SingleNote({
+  texture,
+  position,
+}: {
+  texture: THREE.Texture;
+  position: [number, number, number];
+}) {
   const ref = useRef<THREE.Sprite>(null);
 
   // --- すべてのランダム値を useState の初期化関数（Pureな場所）で生成 ---
@@ -70,7 +76,7 @@ export function MusicParticles() {
   const texture = useTexture("/note.png");
   const count = 2;
 
-  const [positions] = useState(() => {
+  const [positions] = useState<[number, number, number][]>(() => {
     const centerX = 0.424;
     const centerY = 1.105;
     const centerZ = -1.162;
