@@ -2,7 +2,20 @@
 
 import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
+import { Icons } from "@/components/ui/icons";
+import { useScroll } from "@react-three/drei";
+
 export default function Contact() {
+  const scroll = useScroll();
+  const scrollToTop = () => {
+    if (scroll.el) {
+      scroll.el.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -14,9 +27,9 @@ export default function Contact() {
         whileInView={{ x: 0, opacity: 1 }}
         viewport={{ once: false, amount: 0.4 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-center text-white shadow-2xl backdrop-blur-md md:px-10 md:py-16"
+        className="relative w-full max-w-xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-center text-white shadow-2xl backdrop-blur-md md:px-10 md:py-16"
       >
-        {/* セクションタイトル: TYPO.h2 */}
+        {/* セクションタイトル */}
         <h2 className={`${TYPO.h2} mb-6`}>CONTACT</h2>
 
         <form
@@ -35,7 +48,6 @@ export default function Contact() {
             value="Portfolioからの問い合わせ"
           />
 
-          {/* 各入力項目のラベル: TYPO.label */}
           <div>
             <label className={`${TYPO.label} ml-2 text-orange-200/60`}>
               Name
@@ -83,7 +95,7 @@ export default function Contact() {
           </button>
         </form>
 
-        {/* フォールバック・コピーライト: TYPO.label */}
+        {/* コピーライト */}
         <div className="mt-8 space-y-2 border-t border-white/5 pt-6">
           <p className={`${TYPO.label} tracking-widest text-orange-200/40`}>
             OR EMAIL:{" "}
@@ -99,6 +111,15 @@ export default function Contact() {
           </p>
         </div>
       </motion.div>
+      <button
+        onClick={scrollToTop}
+        className="absolute bottom-8 left-8 z-50 flex h-16 w-16 items-center justify-center rounded-full border-2 border-white/20 bg-[#5d4037] text-white shadow-2xl transition-all hover:scale-110 hover:hover:bg-orange-300 active:scale-95"
+        aria-label="Back to top"
+      >
+        <div className="flex flex-col items-center gap-0.5">
+          <Icons.anglesUp size={24} />
+        </div>
+      </button>
     </section>
   );
 }

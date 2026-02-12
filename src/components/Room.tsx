@@ -108,11 +108,14 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
   useRoomAnimation(roomRef);
 
   const rawTexture = useTexture("/PC_Bake.webp");
+
   const pcTexture = useMemo(() => {
     if (!rawTexture) return null;
     const t = rawTexture.clone();
     t.flipY = false;
-    t.anisotropy = 16;
+    t.anisotropy = 4;
+    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.LinearFilter;
     t.needsUpdate = true;
     return t;
   }, [rawTexture]);
@@ -169,73 +172,63 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
             transparent
           />
         </mesh>
-        {isDark && (
-          <spotLight
-            position={[0, 0, 0]} // ライトの出どころ
-            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
-            intensity={0.1} // 明るさ
-            angle={Math.PI / 2} // ライトの広がり具合
-            penumbra={0.5} // ライトの中心から縁への減衰具合
-            distance={0.2} // ライトの届く距離
-            color="#d5d5d5"
-            castShadow
-            onUpdate={(self) => {
-              self.target.position.set(1, 0, 0.0505); // 照らしたい座標（机）
-              self.target.updateMatrixWorld(); // 向きを即座に計算
-            }}
-          />
-        )}
+        <spotLight
+          position={[0, 0, 0]} // ライトの出どころ
+          shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+          intensity={isDark ? 0.1 : 0} // 明るさ
+          angle={Math.PI / 2} // ライトの広がり具合
+          penumbra={0.5} // ライトの中心から縁への減衰具合
+          distance={0.2} // ライトの届く距離
+          color="#d5d5d5"
+          onUpdate={(self) => {
+            self.target.position.set(1, 0, 0.0505); // 照らしたい座標（机）
+            self.target.updateMatrixWorld(); // 向きを即座に計算
+          }}
+        />
       </group>
       {/* can1 */}
-      {isDark && (
-        <group
-          position={[-1.158, 1.074, 1.223]}
-          rotation={[-0.332, 0, Math.PI]}
-        >
-          <mesh
-            geometry={nodes.立方体046.geometry}
-            material={nodes.立方体046.material}
-          />
-          <mesh
-            geometry={nodes.立方体046_1.geometry}
-            material={materials.silber}
-          />
-          <mesh
-            geometry={nodes.立方体046_2.geometry}
-            material={materials.orange}
-          />
-        </group>
-      )}
+      <group
+        position={[-1.158, 1.074, 1.223]}
+        rotation={[-0.332, 0, Math.PI]}
+        visible={isDark}
+      >
+        <mesh
+          geometry={nodes.立方体046.geometry}
+          material={nodes.立方体046.material}
+        />
+        <mesh
+          geometry={nodes.立方体046_1.geometry}
+          material={materials.silber}
+        />
+        <mesh
+          geometry={nodes.立方体046_2.geometry}
+          material={materials.orange}
+        />
+      </group>
       {/* can2 */}
-      {isDark && (
-        <group
-          position={[-1.225, 1.074, 1.119]}
-          rotation={[-0.404, -0.594, 2.907]}
-        >
-          <mesh
-            geometry={nodes.立方体024.geometry}
-            material={nodes.立方体024.material}
-          />
-          <mesh
-            geometry={nodes.立方体024_1.geometry}
-            material={materials.silber}
-          />
-          <mesh
-            geometry={nodes.立方体024_2.geometry}
-            material={materials.orange}
-          />
-        </group>
-      )}
+      <group
+        position={[-1.225, 1.074, 1.119]}
+        rotation={[-0.404, -0.594, 2.907]}
+        visible={isDark}
+      >
+        <mesh
+          geometry={nodes.立方体024.geometry}
+          material={nodes.立方体024.material}
+        />
+        <mesh
+          geometry={nodes.立方体024_1.geometry}
+          material={materials.silber}
+        />
+        <mesh
+          geometry={nodes.立方体024_2.geometry}
+          material={materials.orange}
+        />
+      </group>
       {/* cap */}
-      {!isDark && (
-        <group position={[-1.158, 1.036, 1.138]}>
-          <mesh geometry={nodes.円柱018.geometry} material={materials.orange} />
-          <mesh
-            geometry={nodes.円柱018_1.geometry}
-            material={materials.white}
-          />
-        </group>
-      )}
+      <group position={[-1.158, 1.036, 1.138]} visible={!isDark}>
+        <mesh geometry={nodes.円柱018.geometry} material={materials.orange} />
+        <mesh geometry={nodes.円柱018_1.geometry} material={materials.white} />
+      </group>
       {/* mike */}
       <group
         position={[-1.314, 1.064, 0.907]}
@@ -269,22 +262,19 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
             height={0.36} // 4. 赤い板が上下にはみ出ないかチェック
           />
         </group>
-        {isDark && (
-          <spotLight
-            position={[0.02, 0.085, 0]} // ライトの出どころ
-            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
-            intensity={0.5} // 明るさ
-            angle={Math.PI / 2} // ライトの広がり具合
-            penumbra={0.2} // ライトの中心から縁への減衰具合
-            distance={0.4} // ライトの届く距離
-            color="#d5d5d5"
-            castShadow
-            onUpdate={(self) => {
-              self.target.position.set(0.12, 0.185, 0); // 照らしたい座標（机）
-              self.target.updateMatrixWorld(); // 向きを即座に計算
-            }}
-          />
-        )}
+        <spotLight
+          position={[0.02, 0.085, 0]} // ライトの出どころ
+          shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+          intensity={isDark ? 0.5 : 0} // 明るさ
+          angle={Math.PI / 2} // ライトの広がり具合
+          penumbra={0.2} // ライトの中心から縁への減衰具合
+          distance={0.4} // ライトの届く距離
+          color="#d5d5d5"
+          onUpdate={(self) => {
+            self.target.position.set(0.12, 0.185, 0); // 照らしたい座標（机）
+            self.target.updateMatrixWorld(); // 向きを即座に計算
+          }}
+        />
       </group>
       {/* sub_monitor */}
       <group position={[-1.186, 1.18, -0.163]} rotation={[0.002, -0.49, 0.07]}>
@@ -302,28 +292,24 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
         />
         <group position={[0.027, 0.08, 0]} rotation={[0, Math.PI / 2, 0]}>
           <MonitorContent
-            isDark={isDark}
             monitorId={1}
             width={0.61} // 3. 赤い板が左右にはみ出ないかチェック
             height={0.36} // 4. 赤い板が上下にはみ出ないかチェック
           />
         </group>
-        {isDark && (
-          <spotLight
-            position={[0.027, 0.08, 0]} // ライトの出どころ
-            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
-            intensity={0.5} // 明るさ
-            angle={Math.PI / 2} // ライトの広がり具合
-            penumbra={0.2} // ライトの中心から縁への減衰具合
-            distance={0.4} // ライトの届く距離
-            color="#d5d5d5"
-            castShadow
-            onUpdate={(self) => {
-              self.target.position.set(0.077, 0.08, 0); // 照らしたい座標（机）
-              self.target.updateMatrixWorld(); // 向きを即座に計算
-            }}
-          />
-        )}
+        <spotLight
+          position={[0.027, 0.08, 0]} // ライトの出どころ
+          shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+          intensity={isDark ? 0.5 : 0}
+          angle={Math.PI / 2} // ライトの広がり具合
+          penumbra={0.2} // ライトの中心から縁への減衰具合
+          distance={0.4} // ライトの届く距離
+          color="#d5d5d5"
+          onUpdate={(self) => {
+            self.target.position.set(0.077, 0.08, 0); // 照らしたい座標（机）
+            self.target.updateMatrixWorld(); // 向きを即座に計算
+          }}
+        />
       </group>
       {/* pc */}
       <group position={[-0.7, 0.7, -0.1]}>
@@ -362,9 +348,11 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
             <mesh geometry={nodes.立方体007_8.geometry}>
               <meshStandardMaterial map={pcTexture} />
             </mesh>
-            {isDark && (
-              <pointLight intensity={0.2} distance={0.3} decay={2}></pointLight>
-            )}
+            <pointLight
+              intensity={isDark ? 0.2 : 0}
+              distance={0.3}
+              decay={2}
+            ></pointLight>
           </group>
           {/* pc_glass */}
           <mesh
@@ -444,43 +432,42 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
           </group>
           {/* record_detail_off */}
           {/* record_detail_on */}
-          {!isDark ? (
-            <>
-              <group
-                position={[0.527, 1.113, -1.19]}
-                rotation={[1.566, -0.063, 0.597]}
-              >
-                <mesh
-                  geometry={nodes.円004.geometry}
-                  material={materials.silber}
-                />
-                <mesh
-                  geometry={nodes.円004_1.geometry}
-                  material={materials.orange}
-                />
-                <mesh
-                  geometry={nodes.円004_2.geometry}
-                  material={nodes.円004_2.material}
-                />
-              </group>
-              <MusicParticles />
-            </>
-          ) : (
-            <group position={[0.58, 1.115, -1.166]}>
-              <mesh
-                geometry={nodes.円002.geometry}
-                material={nodes.円002.material}
-              />
-              <mesh
-                geometry={nodes.円002_1.geometry}
-                material={materials.silber}
-              />
-              <mesh
-                geometry={nodes.円002_2.geometry}
-                material={materials.orange}
-              />
-            </group>
-          )}
+          <group
+            position={[0.527, 1.113, -1.19]}
+            rotation={[1.566, -0.063, 0.597]}
+            visible={!isDark}
+          >
+            <mesh geometry={nodes.円004.geometry} material={materials.silber} />
+            <mesh
+              geometry={nodes.円004_1.geometry}
+              material={materials.orange}
+            />
+            <mesh
+              geometry={nodes.円004_2.geometry}
+              material={nodes.円004_2.material}
+            />
+          </group>
+          <group visible={!isDark}>
+            <MusicParticles />
+          </group>
+
+          <group
+            position={[0.58, 1.115, -1.166]}
+            visible={isDark} // ここで出し分け！
+          >
+            <mesh
+              geometry={nodes.円002.geometry}
+              material={nodes.円002.material}
+            />
+            <mesh
+              geometry={nodes.円002_1.geometry}
+              material={materials.silber}
+            />
+            <mesh
+              geometry={nodes.円002_2.geometry}
+              material={materials.orange}
+            />
+          </group>
         </group>
       </group>
       {/* bed_main */}
@@ -494,19 +481,18 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
       </group>
       {/* bed_detail_on */}
       {/* bed_detail_off */}
-      {isDark ? (
-        <mesh
-          geometry={nodes.bedOn.geometry}
-          material={materials["light blue"]}
-          position={[1.989, 0.533, -0.62]}
-        />
-      ) : (
-        <mesh
-          geometry={nodes.bedOff.geometry}
-          material={materials["light blue"]}
-          position={[1.592, 0.569, -0.822]}
-        />
-      )}
+      <mesh
+        geometry={nodes.bedOn.geometry}
+        material={materials["light blue"]}
+        position={[1.989, 0.533, -0.62]}
+        visible={isDark}
+      />
+      <mesh
+        geometry={nodes.bedOff.geometry}
+        material={materials["light blue"]}
+        position={[1.592, 0.569, -0.822]}
+        visible={!isDark}
+      />
       {/* circle_carpet_gray */}
       <mesh
         geometry={nodes.carpet1.geometry}
@@ -531,32 +517,24 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
         geometry={nodes.desk.geometry}
         material={materials.brown}
         position={[1.137, 0.229, 0.642]}
-        castShadow
       />
       {/* light */}
       <group position={[1.035, 0.579, 0.485]} rotation={[0, -0.448, 0.396]}>
-        <mesh
-          geometry={nodes.円柱011.geometry}
-          material={materials.white}
-          castShadow
-        />
+        <mesh geometry={nodes.円柱011.geometry} material={materials.white} />
         <mesh geometry={nodes.円柱011_1.geometry} material={materials.brown} />
-        {isDark && (
-          <spotLight
-            position={[0, -0.079, 0]} // ライトの出どころ
-            shadow-bias={-0.0001} // シャドウのアーティファクトを防止
-            intensity={1} // 明るさ
-            angle={Math.PI / 3} // ライトの広がり具合
-            penumbra={0.2} // ライトの中心から縁への減衰具合
-            distance={0.4} // ライトの届く距離
-            color="#d5d5d5"
-            castShadow
-            onUpdate={(self) => {
-              self.target.position.set(1.137, 0.229, 0.642); // 照らしたい座標（机）
-              self.target.updateMatrixWorld(); // 向きを即座に計算
-            }}
-          />
-        )}
+        <spotLight
+          position={[0, -0.079, 0]} // ライトの出どころ
+          shadow-bias={-0.0001} // シャドウのアーティファクトを防止
+          intensity={isDark ? 1 : 0} // 明るさ
+          angle={Math.PI / 3} // ライトの広がり具合
+          penumbra={0.2} // ライトの中心から縁への減衰具合
+          distance={0.4} // ライトの届く距離
+          color="#d5d5d5"
+          onUpdate={(self) => {
+            self.target.position.set(1.137, 0.229, 0.642); // 照らしたい座標（机）
+            self.target.updateMatrixWorld(); // 向きを即座に計算
+          }}
+        />
       </group>
       {/* rimo */}
       <group

@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 
+// --- ここが足りなかった部分です！ ---
 const SHARED_COUNT = 10;
 const SHARED_SHAPES = Array.from({ length: SHARED_COUNT }, (_, i) => ({
   id: i,
@@ -15,92 +16,88 @@ const SHARED_SHAPES = Array.from({ length: SHARED_COUNT }, (_, i) => ({
   wavyAmount: 0.005 + Math.random() * 0.01,
 }));
 
-export function MonitorContent({
-  isDark = false,
-  monitorId = 0,
-  width = 0.6,
-  height = 0.4,
-}) {
+// メモリ節約用の作業用ベクトル
+const _tempNormal = new THREE.Vector3();
+
+export function MonitorContent({ monitorId = 0, width = 0.6, height = 0.4 }) {
   const groupRef = useRef<THREE.Group>(null);
 
-  // --- 【修正】切り取り線を保持するオブジェクト ---
-  // 座標を後で更新するので、中身は空でOK
+  // クリッピング用の板
   const clippingPlanes = useMemo(
     () => [
-      new THREE.Plane(), // 下
-      new THREE.Plane(), // 上
-      new THREE.Plane(), // 左
-      new THREE.Plane(), // 右
+      new THREE.Plane(),
+      new THREE.Plane(),
+      new THREE.Plane(),
+      new THREE.Plane(),
     ],
     []
+  );
+
+  // マテリアルの共通化
+  const shapeMaterial = useMemo(
+    () =>
+      new THREE.MeshStandardMaterial({
+        color: "#00ffff",
+        emissive: "#51ffff",
+        emissiveIntensity: 3,
+        toneMapped: false,
+        transparent: true,
+        clippingPlanes: clippingPlanes,
+        clipShadows: true,
+      }),
+    [clippingPlanes]
   );
 
   useFrame((state) => {
     if (!groupRef.current) return;
 
-    // ★ 1. クリッピングプレーンをモニターの現在の位置・回転に同期させる
-    // これをしないと、世界の中心（0,0,0）で切り取られてしまいます
-    const transformPlane = (
+    const updatePlane = (
       index: number,
-      normal: THREE.Vector3,
-      distance: number
+      nx: number,
+      ny: number,
+      nz: number,
+      dist: number
     ) => {
-      clippingPlanes[index].set(normal, distance);
+      _tempNormal.set(nx, ny, nz);
+      clippingPlanes[index].set(_tempNormal, dist);
       clippingPlanes[index].applyMatrix4(groupRef.current!.matrixWorld);
     };
 
-    // モニターのローカル座標系での「端」を設定
-    transformPlane(0, new THREE.Vector3(0, 1, 0), height / 2); // 下から上向き
-    transformPlane(1, new THREE.Vector3(0, -1, 0), height / 2); // 上から下向き
-    transformPlane(2, new THREE.Vector3(1, 0, 0), width / 2); // 左から右向き
-    transformPlane(3, new THREE.Vector3(-1, 0, 0), width / 2); // 右から左向き
+    updatePlane(0, 0, 1, 0, height / 2);
+    updatePlane(1, 0, -1, 0, height / 2);
+    updatePlane(2, 1, 0, 0, width / 2);
+    updatePlane(3, -1, 0, 0, width / 2);
 
-    // --- 2. 図形の移動計算 ---
     const time = state.clock.elapsedTime;
     const halfH = height / 2;
+    const halfW = width / 2;
 
-    groupRef.current.children.forEach((child, i) => {
-      if (i === SHARED_COUNT) return;
+    for (let i = 0; i < SHARED_COUNT; i++) {
+      const child = groupRef.current.children[i];
+      if (!child) continue;
 
       const s = SHARED_SHAPES[i];
-      const cycleDuration = 8;
-      const progress = ((time + s.timeOffset) % cycleDuration) / cycleDuration;
+      const cycle = 8;
+      const progress = ((time + s.timeOffset) % cycle) / cycle;
 
-      const startY = -halfH - 0.2;
-      const endY = halfH + 0.2;
-      const localY = startY + (endY - startY) * progress;
-
-      const virtualX = s.initialX;
+      const localY = -halfH - 0.2 + (height + 0.4) * progress;
       const wavyX = Math.sin(time * s.wavySpeed + s.id) * s.wavyAmount;
-      const localX = virtualX + wavyX - monitorId * (width - 0.02);
+      const localX = s.initialX + wavyX - monitorId * (width - 0.02);
 
       child.position.set(localX, localY, 0.01);
-
-      // 表示判定（モニターの担当エリアにいるか）
-      const halfW = width / 2;
       child.visible = localX >= -halfW - 0.1 && localX <= halfW + 0.1;
-    });
+    }
   });
 
   return (
     <group ref={groupRef}>
       {SHARED_SHAPES.map((s) => (
-        <mesh key={s.id}>
+        <mesh key={s.id} material={shapeMaterial}>
           {s.isRing ? (
-            // args={[内側の半径, 外側の半径, 分割数]}
             <ringGeometry args={[s.size * 0.92, s.size, 32]} />
           ) : (
             <circleGeometry args={[s.size, 32]} />
           )}
-          <meshStandardMaterial
-            color="#00ffff"
-            emissive="#51ffff"
-            emissiveIntensity={3}
-            toneMapped={false}
-            transparent
-            clippingPlanes={clippingPlanes}
-            clipShadows={true}
-          />
         </mesh>
       ))}
 

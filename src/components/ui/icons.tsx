@@ -5,6 +5,7 @@ import {
   FaPuzzlePiece,
   FaMoon,
   FaSun,
+  FaAnglesUp,
 } from "react-icons/fa6";
 
 export const Icons = {
@@ -14,4 +15,5 @@ export const Icons = {
   puzzlePiece: FaPuzzlePiece,
   moon: FaMoon,
   sun: FaSun,
+  anglesUp: FaAnglesUp,
 };

@@ -50,7 +50,7 @@ export default function MobileMenu() {
 
       {/* 背景オーバーレイ */}
       <div
-        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${
+        className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-500 ${
           isOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={() => setIsOpen(false)}
@@ -58,7 +58,7 @@ export default function MobileMenu() {
 
       {/* --- かまぼこメニュー（茶色テーマ） --- */}
       <nav
-        className={`fixed right-0 bottom-0 left-0 z-50 mx-auto w-[94%] max-w-sm rounded-t-[2.5rem] border-x border-t border-white/20 bg-[#5d4037]/95 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+        className={`fixed right-0 bottom-0 left-0 z-50 mx-auto w-[94%] max-w-sm rounded-t-[2.5rem] border-x border-t border-white/20 bg-[#5d4037]/95 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >

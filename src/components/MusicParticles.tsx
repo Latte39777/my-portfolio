@@ -5,6 +5,8 @@ import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import * as THREE from "three";
 
+// 重いかも
+
 function SingleNote({
   texture,
   position,
@@ -13,8 +15,6 @@ function SingleNote({
   position: [number, number, number];
 }) {
   const ref = useRef<THREE.Sprite>(null);
-
-  // --- すべてのランダム値を useState の初期化関数（Pureな場所）で生成 ---
   const [speed] = useState(() => 0.003 + Math.random() * 0.005);
   const [offset] = useState(() => Math.random() * Math.PI * 2);
   const [waitDuration] = useState(() => Math.random() * 1);

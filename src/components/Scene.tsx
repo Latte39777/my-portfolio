@@ -2,12 +2,13 @@
 
 import * as THREE from "three";
 import { Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   ScrollControls,
   Scroll,
   Environment,
   useScroll,
+  Stats,
 } from "@react-three/drei";
 
 import { Model } from "./Room";
@@ -38,34 +39,20 @@ export default function Scene() {
   const isDark = theme === "dark";
   return (
     <Canvas
-      shadows
       camera={{ position: [5, 5, 5], fov: 45 }}
-      dpr={[1, 2]}
+      dpr={0.7}
       gl={{
         localClippingEnabled: true,
-        antialias: true,
-        toneMapping: THREE.ACESFilmicToneMapping,
-        toneMappingExposure: 1.0,
-        outputColorSpace: THREE.SRGBColorSpace,
+        antialias: false,
+        powerPreference: "high-performance",
       }}
     >
-      <ambientLight
-        key={`ambientLight-${isDark}`}
-        intensity={isDark ? 1.5 : 1.5}
-        color={isDark ? "#7979b6" : "#ffffff"}
-      />
-      <pointLight
-        key={`point-${theme}`}
-        position={[-10, -5, -10]}
-        intensity={isDark ? 1 : 1}
-        color="#ffffff"
-        castShadow
-        shadow-mapSize={[1024, 1024]}
-      />
+      <Stats />
+      <ambientLight intensity={1.5} color={isDark ? "#7979b6" : "#ffffff"} />
+      <pointLight position={[-10, -5, -10]} intensity={1} color="#ffffff" />
       <Environment
-        key={`env-${theme}`}
         preset={isDark ? "night" : "city"}
-        environmentIntensity={isDark ? 1 : 1}
+        environmentIntensity={1}
         background={false}
       />
 

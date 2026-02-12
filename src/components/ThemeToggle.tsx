@@ -3,8 +3,9 @@
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
+import { memo } from "react";
 
-export default function ThemeToggle() {
+function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const isDark = theme === "dark";
 
@@ -41,3 +42,5 @@ export default function ThemeToggle() {
     </button>
   );
 }
+
+export default memo(ThemeToggle);
