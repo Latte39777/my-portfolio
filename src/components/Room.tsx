@@ -113,7 +113,7 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
     if (!rawTexture) return null;
     const t = rawTexture.clone();
     t.flipY = false;
-    t.anisotropy = 4;
+    t.anisotropy = 2;
     t.minFilter = THREE.LinearFilter;
     t.magFilter = THREE.LinearFilter;
     t.needsUpdate = true;

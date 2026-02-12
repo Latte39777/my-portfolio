@@ -2,7 +2,7 @@
 
 export default function Top() {
   return (
-    <section className="relative flex h-screen w-full flex-col justify-center px-10">
+    <section className="relative flex min-h-screen w-full flex-col justify-center px-10">
       <div className="z-10">
         <p className="mb-2 font-bold tracking-widest text-cyan-400">
           PORTFOLIO

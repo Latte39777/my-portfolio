@@ -2,13 +2,12 @@
 
 import * as THREE from "three";
 import { Suspense } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   ScrollControls,
   Scroll,
   Environment,
   useScroll,
-  Stats,
 } from "@react-three/drei";
 
 import { Model } from "./Room";
@@ -40,14 +39,13 @@ export default function Scene() {
   return (
     <Canvas
       camera={{ position: [5, 5, 5], fov: 45 }}
-      dpr={0.7}
+      dpr={0.1}
       gl={{
         localClippingEnabled: true,
         antialias: false,
         powerPreference: "high-performance",
       }}
     >
-      <Stats />
       <ambientLight intensity={1.5} color={isDark ? "#7979b6" : "#ffffff"} />
       <pointLight position={[-10, -5, -10]} intensity={1} color="#ffffff" />
       <Environment

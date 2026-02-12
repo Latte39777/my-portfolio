@@ -8,7 +8,7 @@ export default function Profile() {
   return (
     <section
       id="profile"
-      className="flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-end md:pr-32"
+      className="flex min-h-screen w-full items-center justify-center p-4 md:justify-end md:pr-32"
     >
       <motion.div
         initial={{ x: 100, opacity: 0 }}

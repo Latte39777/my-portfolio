@@ -34,7 +34,7 @@ export default function Works() {
   return (
     <section
       id="works"
-      className="absolute left-0 flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-start md:pl-32"
+      className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
       style={{ top: "270vh" }}
     >
       <motion.div

@@ -7,18 +7,10 @@ export default function Vision() {
   return (
     <section
       id="vision"
-      // Skills(左)の次なので、右寄せ(md:justify-end)にしてジグザグを維持
-      className="absolute left-0 flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-end md:pr-32"
+      className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-end md:pr-32"
       style={{ top: "540vh" }}
     >
-      <motion.div
-        // 右から滑り込んでくるアニメーション
-        initial={{ x: 100, opacity: 0 }}
-        whileInView={{ x: 0, opacity: 1 }}
-        viewport={{ once: false, amount: 0.4 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-10 py-16 text-white shadow-2xl backdrop-blur-md md:px-12 md:py-20"
-      >
+      <motion.div className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-white shadow-2xl backdrop-blur-md md:px-12 md:py-20">
         <h2 className={`${TYPO.h2} mb-10 text-center`}>VISION</h2>
 
         <div className="space-y-10">

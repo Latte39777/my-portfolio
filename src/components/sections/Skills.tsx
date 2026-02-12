@@ -21,7 +21,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="absolute left-0 flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-start md:pl-32"
+      className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
       style={{ top: "740vh" }}
     >
       <motion.div
