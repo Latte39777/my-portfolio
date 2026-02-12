@@ -165,12 +165,7 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
         {/* 発光パネル（平面） */}
         <mesh position={[0, 0, 0.0505]}>
           <planeGeometry args={[0.23, 0.12]} />
-          <meshStandardMaterial
-            color="#c0c0c0"
-            emissive={"#cbcbcb"}
-            emissiveIntensity={3}
-            transparent
-          />
+          <meshBasicMaterial color="#c0c0c0" />
         </mesh>
         <spotLight
           position={[0, 0, 0]} // ライトの出どころ
@@ -557,13 +552,7 @@ export function Model({ isDark, ...props }: Props & ThreeElements["group"]) {
         {/* 発光 */}
         <mesh position={[0, 0.002, -0.035]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[0.05, 0.035]} />
-          <meshStandardMaterial
-            color="#c0c0c0"
-            emissive={"#cbcbcb"}
-            emissiveIntensity={3}
-            transparent
-            side={THREE.DoubleSide}
-          />
+          <meshBasicMaterial color="#c0c0c0" />
         </mesh>
       </group>
     </group>

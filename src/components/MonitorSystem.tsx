@@ -103,12 +103,7 @@ export function MonitorContent({ monitorId = 0, width = 0.6, height = 0.4 }) {
 
       <mesh position={[0, 0, 0]}>
         <planeGeometry args={[width, height]} />
-        <meshStandardMaterial
-          color="#c0c0c0"
-          emissive={"#cbcbcb"}
-          emissiveIntensity={3}
-          transparent
-        />
+        <meshBasicMaterial color="#ffffff" />
       </mesh>
     </group>
   );
