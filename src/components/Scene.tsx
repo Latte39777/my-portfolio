@@ -39,7 +39,7 @@ export default function Scene() {
   return (
     <Canvas
       camera={{ position: [5, 5, 5], fov: 45 }}
-      dpr={0.1}
+      dpr={0.5}
       gl={{
         localClippingEnabled: true,
         antialias: false,
