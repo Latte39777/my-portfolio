@@ -1,9 +1,9 @@
 "use client";
 
-import { Text } from "@react-three/drei";
 import { useState, useEffect } from "react";
+import { Text } from "@react-three/drei";
 
-const TextComponent = Text as any;
+const TextComponent = Text as unknown as typeof Text;
 
 export function DigitalClock() {
   const [time, setTime] = useState("");
@@ -29,7 +29,7 @@ export function DigitalClock() {
       textAlign="center"
       letterSpacing={-0.05}
       scale={[1, 1.5, 1]}
-      font="digital-7 (mono).ttf"
+      font="/fonts/digital-7 (mono).ttf"
     >
       {time}
       <meshStandardMaterial

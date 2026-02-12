@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useRef, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
 
 const SHARED_COUNT = 10;
 const SHARED_SHAPES = Array.from({ length: SHARED_COUNT }, (_, i) => ({

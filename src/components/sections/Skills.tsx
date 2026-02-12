@@ -1,6 +1,7 @@
 "use client";
 
-// カテゴリ別にスキルを定義
+import { motion } from "framer-motion";
+
 const codingSkills = [
   { name: "HTML / CSS", level: 90 },
   { name: "JavaScript", level: 85 },
@@ -12,39 +13,48 @@ const codingSkills = [
 const creatorSkills = [
   { name: "Blender", level: 65 },
   { name: "DaVinci Resolve", level: 60 },
-  { name: "Three.js / R3F", level: 55 }, // CodeでもありCreativeでもあるのでこちらに入れました（移動自由です）
+  { name: "Three.js / R3F", level: 55 },
 ];
 
 export default function Skills() {
   return (
     <section
       id="skills"
-      // md:justify-start md:pl-32 → PCで見るときは左寄せ＋左に余白
-      className="flex h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
+      className="absolute left-0 flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-start md:pl-32"
+      style={{ top: "740vh" }}
     >
-      {/* max-w-2xl → カードの幅を大きくしました */}
-      <div className="animate-fade-in-up w-full max-w-2xl rounded-[2.5rem] border-[6px] border-white/60 bg-white/40 p-8 shadow-2xl backdrop-blur-md md:p-12">
-        <h2 className="mb-8 text-center text-4xl font-black tracking-widest text-cyan-400 drop-shadow-sm">
+      <motion.div
+        // Worksと同じアニメーション設定
+        initial={{ x: -100, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        viewport={{ once: false, amount: 0.4 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        // 茶色テーマで統一
+        className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 p-8 text-white shadow-2xl backdrop-blur-md md:p-12"
+      >
+        <h2 className="mb-8 text-center text-4xl font-black tracking-widest text-orange-100 drop-shadow-sm">
           SKILLS
         </h2>
 
         <div className="grid gap-10 md:grid-cols-2">
-          {/* 左側カラム：Coding */}
+          {/* Coding */}
           <div>
-            <h3 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-800">
-              <span className="text-blue-500">💻</span> Coding
+            <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-orange-200">
+              <span className="opacity-80">💻</span> Coding
             </h3>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               {codingSkills.map((skill, index) => (
                 <div key={index} className="w-full">
-                  <div className="mb-1 flex justify-between px-1 text-sm font-bold text-gray-700">
+                  <div className="mb-2 flex justify-between px-1 text-xs font-black tracking-tighter text-orange-100/80 uppercase">
                     <span>{skill.name}</span>
                     <span>{skill.level}%</span>
                   </div>
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-white/50 shadow-inner">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-blue-400 to-blue-600 transition-all duration-1000 ease-out"
-                      style={{ width: `${skill.level}%` }}
+                  <div className="h-2 w-full overflow-hidden rounded-full border border-white/5 bg-white/10 shadow-inner">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-orange-300 to-orange-500"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      transition={{ duration: 1.5, delay: 0.2 }}
                     />
                   </div>
                 </div>
@@ -52,23 +62,24 @@ export default function Skills() {
             </div>
           </div>
 
-          {/* 右側カラム：Creator */}
+          {/* Creator */}
           <div>
-            <h3 className="mb-4 flex items-center gap-2 text-xl font-bold text-gray-800">
-              <span className="text-purple-500">🎨</span> Creator
+            <h3 className="mb-6 flex items-center gap-2 text-xl font-bold text-orange-200">
+              <span className="opacity-80">🎨</span> Creator
             </h3>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-5">
               {creatorSkills.map((skill, index) => (
                 <div key={index} className="w-full">
-                  <div className="mb-1 flex justify-between px-1 text-sm font-bold text-gray-700">
+                  <div className="mb-2 flex justify-between px-1 text-xs font-black tracking-tighter text-orange-100/80 uppercase">
                     <span>{skill.name}</span>
                     <span>{skill.level}%</span>
                   </div>
-                  <div className="h-3 w-full overflow-hidden rounded-full bg-white/50 shadow-inner">
-                    {/* クリエイター側は色を変えてみました（紫系） */}
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-purple-400 to-pink-500 transition-all duration-1000 ease-out"
-                      style={{ width: `${skill.level}%` }}
+                  <div className="h-2 w-full overflow-hidden rounded-full border border-white/5 bg-white/10 shadow-inner">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-orange-100 to-orange-300"
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      transition={{ duration: 1.5, delay: 0.4 }}
                     />
                   </div>
                 </div>
@@ -77,10 +88,10 @@ export default function Skills() {
           </div>
         </div>
 
-        <div className="mt-8 text-center text-xs font-bold text-gray-500">
+        <div className="mt-10 border-t border-white/5 pt-6 text-center text-[10px] font-bold tracking-[0.3em] text-orange-200/40 uppercase">
           Also learning: AWS, Docker, Unity, Unreal Engine
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

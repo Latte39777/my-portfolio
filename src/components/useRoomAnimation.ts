@@ -1,10 +1,8 @@
-// useRoomAnimation.ts
-import { RefObject, useLayoutEffect } from "react";
 import * as THREE from "three";
+import { RefObject, useLayoutEffect } from "react";
 import { useProgress } from "@react-three/drei";
 import { gsap } from "gsap";
 
-// useRoomAnimation.ts
 export const useRoomAnimation = (roomRef: RefObject<THREE.Group | null>) => {
   const { progress } = useProgress();
 
@@ -21,7 +19,7 @@ export const useRoomAnimation = (roomRef: RefObject<THREE.Group | null>) => {
     const tl = gsap.timeline({ delay: 0.5 });
 
     // 2. パズルを特定
-    const puzzle = room.children.find((child) => child.name === "pazzle");
+    const puzzle = room.children.find((child) => child.name === "puzzle");
     const otherItems = room.children.filter((child) => child !== puzzle);
 
     if (puzzle) {

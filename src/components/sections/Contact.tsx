@@ -1,87 +1,102 @@
 "use client";
 
-import { FormEvent } from "react";
+import { motion } from "framer-motion";
 
 export default function Contact() {
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    alert("送信しました！（機能は別途実装してください）");
-  };
-
   return (
     <section
       id="contact"
-      className="flex h-screen w-full items-center justify-center p-4"
+      className="absolute left-0 flex h-screen w-full items-center justify-center overflow-hidden p-4 md:justify-end md:pr-32"
+      style={{ top: "900vh" }}
     >
-      <div className="animate-fade-in-up w-full max-w-3xl rounded-[2.5rem] border-[6px] border-white/60 bg-white/40 p-8 shadow-2xl backdrop-blur-md md:p-14">
-        {/* タイトル：text-cyan-400 ではなく text-primary を使用 */}
-        <h2 className="text-primary mb-8 text-center text-4xl font-black tracking-widest drop-shadow-sm">
+      <motion.div
+        initial={{ x: 100, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        viewport={{ once: false, amount: 0.4 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full max-w-xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-center text-white shadow-2xl backdrop-blur-md md:px-10 md:py-16"
+      >
+        <h2 className="mb-6 text-4xl font-black tracking-widest text-orange-100 drop-shadow-sm">
           CONTACT
         </h2>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          {/* お名前入力 */}
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="name"
-              className="ml-2 text-lg font-bold text-gray-700"
-            >
+        <form
+          action="https://api.web3forms.com/submit"
+          method="POST"
+          className="space-y-4 text-left"
+        >
+          <input
+            type="hidden"
+            name="access_key"
+            value="b9957593-01be-4f7c-a0b4-5ca10b4b9a4d"
+          />
+          <input
+            type="hidden"
+            name="subject"
+            value="Portfolioからの問い合わせ"
+          />
+
+          <div>
+            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
               Name
             </label>
             <input
-              id="name"
               type="text"
-              placeholder="お名前"
-              // focus時の色も primary に変更
-              className="focus:border-primary w-full rounded-2xl border-4 border-white/50 bg-white/80 px-6 py-4 text-lg font-medium text-gray-800 transition-all outline-none placeholder:text-gray-400 focus:ring-4 focus:ring-cyan-100"
+              name="name"
               required
+              placeholder="お名前"
+              className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white transition-colors focus:border-orange-300 focus:outline-none"
             />
           </div>
 
-          {/* メールアドレス入力 */}
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="email"
-              className="ml-2 text-lg font-bold text-gray-700"
-            >
+          <div>
+            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
               Email
             </label>
             <input
-              id="email"
               type="email"
-              placeholder="example@gmail.com"
-              className="focus:border-primary w-full rounded-2xl border-4 border-white/50 bg-white/80 px-6 py-4 text-lg font-medium text-gray-800 transition-all outline-none placeholder:text-gray-400 focus:ring-4 focus:ring-cyan-100"
+              name="email"
               required
+              placeholder="メールアドレス"
+              className="w-full rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white transition-colors focus:border-orange-300 focus:outline-none"
             />
           </div>
 
-          {/* メッセージ入力 */}
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="message"
-              className="ml-2 text-lg font-bold text-gray-700"
-            >
+          <div>
+            <label className="ml-2 text-[10px] font-black tracking-widest text-orange-200/60 uppercase">
               Message
             </label>
             <textarea
-              id="message"
-              rows={5}
-              placeholder="お問い合わせ内容..."
-              className="focus:border-primary w-full resize-none rounded-2xl border-4 border-white/50 bg-white/80 px-6 py-4 text-lg font-medium text-gray-800 transition-all outline-none placeholder:text-gray-400 focus:ring-4 focus:ring-cyan-100"
+              name="message"
               required
-            />
+              rows={4}
+              placeholder="メッセージを入力してください"
+              className="w-full resize-none rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-white transition-colors focus:border-orange-300 focus:outline-none"
+            ></textarea>
           </div>
 
-          {/* 送信ボタン */}
-          {/* 背景色を primary に、ホバーで少し濃い cyan-500 になるように設定 */}
           <button
             type="submit"
-            className="mt-6 w-full rounded-2xl bg-cyan-500 py-5 text-2xl font-bold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-cyan-500 hover:shadow-xl active:scale-95"
+            className="mt-2 w-full rounded-full bg-white py-4 text-sm font-black tracking-[0.2em] text-[#5d4037] uppercase shadow-xl transition-all hover:bg-orange-100 active:scale-95"
           >
-            SEND MESSAGE
+            Send Message
           </button>
         </form>
-      </div>
+
+        {/* フォールバックの連絡先 */}
+        <div className="mt-8 space-y-2 border-t border-white/5 pt-6 text-[10px] font-bold text-orange-200/40">
+          <p className="tracking-widest">
+            OR EMAIL:{" "}
+            <a
+              href="mailto:latte.works.4649@gmail.com"
+              className="hover:text-orange-200"
+            >
+              latte.works.4649@gmail.com
+            </a>
+          </p>
+          <p className="tracking-[0.5em] uppercase">© 2026 Kotaro Misawa</p>
+        </div>
+      </motion.div>
     </section>
   );
 }

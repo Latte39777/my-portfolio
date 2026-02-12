@@ -3,104 +3,90 @@
 import { useEffect, useState } from "react";
 import SocialLinks from "@/components/SocialLinks";
 import { Icons } from "@/components/ui/icons";
+import dynamic from "next/dynamic";
 
-type MobileMenuProps = {
-  navItems: { label: string; href: string }[];
-};
+const ThemeToggle = dynamic(() => import("@/components/ThemeToggle"), {
+  ssr: false,
+});
 
-export default function MobileMenu({ navItems }: MobileMenuProps) {
+export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isRippling, setIsRippling] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
   const toggleMenu = () => {
-    const nextState = !isOpen;
-    setIsOpen(nextState);
+    setIsOpen(!isOpen);
     setIsRippling(true);
     setTimeout(() => setIsRippling(false), 500);
   };
 
-  const forceClose = () => {
-    setIsOpen(false);
-  };
-
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const targetElement = document.getElementById(id);
-    const scrollContainer = document.querySelector(".hide-scrollbar");
-
-    if (targetElement && scrollContainer) {
-      forceClose();
-
-      scrollContainer.scrollTo({
-        top: targetElement.offsetTop,
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <div className="md:hidden">
+      {/* --- トリガーボタン（パズルピース） --- */}
       <button
-        className="fixed right-8 bottom-8 z-50 rounded-full bg-black p-3 text-white shadow-lg dark:bg-white dark:text-black"
+        className="fixed right-8 bottom-8 z-[60] rounded-full border border-white/20 bg-[#5d4037] p-3 text-white shadow-2xl outline-none"
         onClick={toggleMenu}
-        aria-label="Menu Toggle"
       >
         {isRippling && (
-          <span className="absolute inset-0 z-[-1] animate-ping rounded-full bg-gray-300 opacity-75 dark:bg-gray-600" />
+          <span className="absolute inset-0 z-[-1] animate-ping rounded-full bg-orange-200/40 opacity-75" />
         )}
-
-        <div className="drop-shadow-[3px_3px_0px_#3b82f6]">
+        {/* 青い影(blue-300)からオレンジゴールド(orange-200)の影に変更 */}
+        <div className="drop-shadow-[2px_2px_0px_#fed7aa]">
           <Icons.puzzlePiece
             size={30}
             className={`${
               isOpen ? "rotate-180" : ""
-            } animate-[spin_8s_linear_infinite] text-blue-300 duration-300 ease-in-out`}
+            } animate-[spin_8s_linear_infinite] text-orange-100 duration-300 ease-in-out`}
           />
         </div>
       </button>
 
+      {/* 背景オーバーレイ */}
       <div
-        className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ${
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-500 ${
           isOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
-        onClick={forceClose}
+        onClick={() => setIsOpen(false)}
       />
 
-      {/* --- スライドメニュー本体 --- */}
+      {/* --- かまぼこメニュー（茶色テーマ） --- */}
       <nav
-        className={`fixed top-0 right-0 z-40 h-full w-2/3 max-w-sm bg-white shadow-xl transition-transform duration-300 ease-in-out dark:bg-black ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed right-0 bottom-0 left-0 z-50 mx-auto w-[94%] max-w-sm rounded-t-[3rem] border-x border-t border-white/20 bg-[#5d4037]/95 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+          isOpen ? "translate-y-0" : "translate-y-full"
         }`}
       >
-        <div className="flex h-full flex-col justify-between p-8">
-          <ul className="mt-12 flex flex-col gap-6 text-lg">
-            {navItems.map((item) => (
-              <li key={item.label}>
-                <a
-                  href={item.href}
-                  onClick={(e) => handleScroll(e, item.href)}
-                  className="block py-2 font-bold text-gray-700 hover:text-cyan-400 dark:text-gray-200"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <div className="mb-20">
-            <SocialLinks />
+        <div className="flex flex-col items-center p-8 pb-12">
+          {/* 上段：SNS & トグル */}
+          <div className="mb-8 flex w-full items-center justify-between border-b border-white/5 px-2 pb-6">
+            <div className="scale-90">
+              <SocialLinks />
+            </div>
+            <ThemeToggle />
           </div>
+
+          {/* 下段：コンタクトボタン */}
+          <div className="w-full px-2">
+            <a
+              href="#contact"
+              className="block w-full rounded-full bg-white py-4 text-center text-[11px] font-black tracking-[0.2em] text-[#5d4037] uppercase shadow-xl transition-transform active:scale-95"
+              onClick={() => setIsOpen(false)}
+            >
+              Contact Me
+            </a>
+          </div>
+
+          <button
+            onClick={() => setIsOpen(false)}
+            className="mt-8 text-[9px] font-bold tracking-[0.4em] text-orange-200/40 uppercase transition-colors hover:text-orange-100"
+          >
+            Close Menu
+          </button>
         </div>
       </nav>
     </div>

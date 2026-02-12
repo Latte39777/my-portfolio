@@ -1,73 +1,34 @@
 "use client";
 
-import Link from "next/link";
 import SocialLinks from "@/components/SocialLinks";
 import MobileMenu from "@/components/MobileMenu";
+import dynamic from "next/dynamic";
+
+const ThemeToggle = dynamic(() => import("@/components/ThemeToggle"), {
+  ssr: false,
+});
 
 export default function Header() {
-  const navItems = [
-    { label: "Top", href: "hero" },
-    { label: "Works", href: "works" },
-    { label: "Profile", href: "profile" },
-    { label: "Skills", href: "skills" },
-    { label: "Contact", href: "contact" },
-  ];
-
-  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-
-    const targetElement = document.getElementById(id);
-    // DreiのScrollControlsが作っている、実際にスクロールしている箱
-    const scrollContainer = document.querySelector(".hide-scrollbar");
-
-    if (targetElement && scrollContainer) {
-      // offsetTop（その要素が親の天辺から何ピクセルの位置にあるか）を取得
-      const targetTop = targetElement.offsetTop;
-
-      scrollContainer.scrollTo({
-        top: targetTop,
-        behavior: "smooth",
-      });
-    } else {
-      // デバッグ用：もし動かない場合はコンソールを見てください
-      console.warn("Target or scrollContainer not found:", {
-        id,
-        targetElement,
-        scrollContainer,
-      });
-    }
-  };
-
   return (
-    <header className="fixed top-0 left-0 z-50 flex w-full items-center justify-between bg-transparent px-8 py-6">
-      <a
-        href="#hero"
-        onClick={(e) => handleScroll(e, "hero")}
-        className="cursor-pointer text-xl font-bold text-gray-700"
-      >
-        LOGO
-      </a>
-
-      <nav className="ml-auto hidden md:block">
+    <header className="pointer-events-auto fixed top-0 left-0 z-50 flex w-full items-center justify-end bg-transparent px-10 py-8">
+      <nav className="hidden md:block">
         <ul className="flex items-center gap-6">
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a
-                href={`#${item.href}`}
-                onClick={(e) => handleScroll(e, item.href)}
-                className="cursor-pointer text-lg font-bold text-gray-600 transition-colors hover:text-cyan-400"
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-          <div className="ml-4 border-l border-gray-300 pl-4">
+          <div className="flex items-center gap-6 border-l border-white/20 pl-8">
             <SocialLinks />
+            <ThemeToggle />
+            <a
+              href="#contact"
+              className="rounded-full border border-white/20 bg-white/10 px-5 py-2 text-[10px] font-black tracking-[0.2em] text-orange-100 uppercase shadow-xl backdrop-blur-md transition-all hover:border-orange-100 hover:bg-orange-100 hover:text-[#5d4037]"
+            >
+              Contact
+            </a>
           </div>
         </ul>
       </nav>
 
-      <MobileMenu navItems={navItems} />
+      <div className="md:hidden">
+        <MobileMenu />
+      </div>
     </header>
   );
 }

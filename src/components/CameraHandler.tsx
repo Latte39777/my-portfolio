@@ -1,8 +1,8 @@
 "use client";
 
+import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useProgress, useScroll } from "@react-three/drei";
-import * as THREE from "three";
 
 export default function CameraHandler() {
   const scroll = useScroll();
@@ -78,14 +78,14 @@ export default function CameraHandler() {
     }
 
     // --- スクロール演出のタイムライン設計 ---
-    // r1: 0.1から0.1の距離で移動 (0.1〜0.2で動く。それ以降は1で固定)
-    const r1 = scroll.range(0.1, 0.1);
-    // r2: 0.3から0.1の距離で移動 (0.3〜0.4で動く)
-    const r2 = scroll.range(0.3, 0.1);
-    // r3: 0.5から0.1の距離で移動 (0.5〜0.6で動く)
-    const r3 = scroll.range(0.5, 0.1);
-    // r4: 0.7から0.1の距離で移動 (0.7〜0.8で動く)
-    const r4 = scroll.range(0.7, 0.1);
+    // r1: 0.15 〜 0.25 で移動（開始から15%はTopで完全停止、移動後0.4まで静止）
+    const r1 = scroll.range(0.15, 0.1);
+    // r2: 0.4 〜 0.5 で移動（0.65まで静止）
+    const r2 = scroll.range(0.4, 0.1);
+    // r3: 0.65 〜 0.75 で移動（0.9まで静止）
+    const r3 = scroll.range(0.65, 0.1);
+    // r4: 0.9 〜 0.97 で移動（最後3%だけ余韻として停止）
+    const r4 = scroll.range(0.9, 0.05);
 
     // 1. まず Top -> Works の移動を適用
     state.camera.position.lerpVectors(posStart, posWorks, r1);

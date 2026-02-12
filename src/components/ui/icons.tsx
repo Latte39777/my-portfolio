@@ -3,6 +3,8 @@ import {
   FaSquareXTwitter,
   FaSquareYoutube,
   FaPuzzlePiece,
+  FaMoon,
+  FaSun,
 } from "react-icons/fa6";
 
 export const Icons = {
@@ -10,4 +12,6 @@ export const Icons = {
   twitter: FaSquareXTwitter,
   youtube: FaSquareYoutube,
   puzzlePiece: FaPuzzlePiece,
+  moon: FaMoon,
+  sun: FaSun,
 };
