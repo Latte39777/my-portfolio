@@ -2,6 +2,7 @@
 
 import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
+import { useThree } from "@react-three/fiber";
 
 const codingSkills = [
   { name: "HTML / CSS", level: 90 },

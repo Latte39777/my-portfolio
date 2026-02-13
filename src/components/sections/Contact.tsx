@@ -23,7 +23,7 @@ export default function Contact() {
     <section
       id="contact"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-end md:pr-32"
-      style={{ top: isMobile ? "800vh" : "950vh" }}
+      style={{ top: isMobile ? "930vh" : "950vh" }}
     >
       <motion.div
         initial={{ x: 100, opacity: 0 }}

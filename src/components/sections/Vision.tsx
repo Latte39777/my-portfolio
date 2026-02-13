@@ -46,7 +46,7 @@ export default function Vision() {
               03. The Future
             </h3>
             <p className={`${TYPO.h3} mb-1 text-orange-50`}>
-              将来は、Webと3Dの境界線をなくすようなテクニカルアーティストとして、世界中の人が没入できるデジタルワールドを創造するのが僕の夢です。
+              将来は、Webと3Dの境界線をなくすようなテクニカルアーティストとして、世界中の人が没入できるデジタルワールドを創造するのが目標です。
             </p>
           </div>
         </div>
