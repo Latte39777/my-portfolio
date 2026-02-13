@@ -3,10 +3,8 @@
 export default function Top() {
   return (
     <section
-      className="absolute top-0 left-0 flex min-h-screen w-full items-center justify-center p-4 px-10 md:justify-start md:pl-32"
-      style={{
-        top: "0vh",
-      }}
+      className="absolute top-0 left-0 flex min-h-screen w-full items-center justify-center p-4 px-6 text-center md:justify-start md:pl-32 md:text-left"
+      style={{ top: "0vh" }}
     >
       <div className="z-10">
         <p className="mb-2 font-bold tracking-widest text-cyan-400">
