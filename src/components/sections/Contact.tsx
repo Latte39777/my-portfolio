@@ -4,11 +4,8 @@ import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
 import { Icons } from "@/components/ui/icons";
 import { useScroll } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
 
 export default function Contact() {
-  const { width } = useThree((state) => state.size);
-  const isMobile = width < 768;
   const scroll = useScroll();
   const scrollToTop = () => {
     if (scroll.el) {
@@ -23,7 +20,10 @@ export default function Contact() {
     <section
       id="contact"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-end md:pr-32"
-      style={{ top: isMobile ? "900vh" : "950vh" }}
+      style={{
+        top: "1000vh",
+        transform: "translateY(-50%)",
+      }}
     >
       <motion.div
         initial={{ x: 100, opacity: 0 }}

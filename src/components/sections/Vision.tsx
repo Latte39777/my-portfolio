@@ -8,9 +8,18 @@ export default function Vision() {
     <section
       id="vision"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-end md:pr-32"
-      style={{ top: "540vh" }}
+      style={{
+        top: "600vh",
+        transform: "translateY(-50%)",
+      }}
     >
-      <motion.div className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-white shadow-2xl backdrop-blur-md md:px-12 md:py-20">
+      <motion.div
+        initial={{ x: 100, opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        viewport={{ once: false, amount: 0.4 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 px-8 py-12 text-white shadow-2xl backdrop-blur-md md:px-12 md:py-20"
+      >
         <h2 className={`${TYPO.h2} mb-10 text-center`}>VISION</h2>
 
         <div className="space-y-10">

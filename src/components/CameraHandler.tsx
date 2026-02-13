@@ -30,14 +30,14 @@ export default function CameraHandler() {
       lookWorks: isMobile
         ? new THREE.Vector3(-2, 0, 0)
         : new THREE.Vector3(-3, 1, 0),
-      posProfile: isMobile
+      posVision: isMobile
         ? new THREE.Vector3(2, 1, 1.5)
         : new THREE.Vector3(
             0.7 + pcOffset * 0.2,
             0.4 + pcOffset * 0.25,
             0.6 + pcOffset * 0.15
           ),
-      lookProfile: isMobile
+      lookVision: isMobile
         ? new THREE.Vector3(-5, -1, -5)
         : new THREE.Vector3(-5, -1 - pcOffset * 0.2, -5),
       posSkills: new THREE.Vector3(
@@ -71,23 +71,17 @@ export default function CameraHandler() {
     const r3 = scroll.range(0.65, 0.1);
     const r4 = scroll.range(0.9, 0.05);
 
-    // 1. Top -> Works
     vPos.lerpVectors(points.posStart, points.posWorks, r1);
     vLook.lerpVectors(points.lookStart, points.lookWorks, r1);
 
-    // 2. Works -> Profile
     if (r2 > 0) {
-      vPos.lerpVectors(points.posWorks, points.posProfile, r2);
-      vLook.lerpVectors(points.lookWorks, points.lookProfile, r2);
+      vPos.lerpVectors(points.posWorks, points.posVision, r2);
+      vLook.lerpVectors(points.lookWorks, points.lookVision, r2);
     }
-
-    // 3. Profile -> Skills
     if (r3 > 0) {
-      vPos.lerpVectors(points.posProfile, points.posSkills, r3);
-      vLook.lerpVectors(points.lookProfile, points.lookSkills, r3);
+      vPos.lerpVectors(points.posVision, points.posSkills, r3);
+      vLook.lerpVectors(points.lookVision, points.lookSkills, r3);
     }
-
-    // 4. Skills -> Contact
     if (r4 > 0) {
       vPos.lerpVectors(points.posSkills, points.posContact, r4);
       vLook.lerpVectors(points.lookSkills, points.lookContact, r4);

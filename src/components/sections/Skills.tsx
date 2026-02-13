@@ -23,15 +23,16 @@ export default function Skills() {
     <section
       id="skills"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
-      style={{ top: "740vh" }}
+      style={{
+        top: "860vh",
+        transform: "translateY(-50%)",
+      }}
     >
       <motion.div
-        // Worksと同じアニメーション設定
         initial={{ x: -100, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
         viewport={{ once: false, amount: 0.4 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        // 茶色テーマで統一
         className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 p-8 text-white shadow-2xl backdrop-blur-md md:p-12"
       >
         <h2 className={`${TYPO.h2} mb-8 text-center`}>SKILLS</h2>

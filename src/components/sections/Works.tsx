@@ -35,7 +35,10 @@ export default function Works() {
     <section
       id="works"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
-      style={{ top: "270vh" }}
+      style={{
+        top: "340vh",
+        transform: "translateY(-50%)",
+      }}
     >
       <motion.div
         initial={{ x: -100, opacity: 0 }}
