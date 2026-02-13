@@ -55,7 +55,7 @@ export default function Scene() {
       />
 
       <Suspense fallback={null}>
-        <ScrollControls pages={10} damping={0.1}>
+        <ScrollControls pages={10.5} damping={0.1}>
           <Model isDark={isDark} />
           <CameraHandler />
           <ColorShift />
