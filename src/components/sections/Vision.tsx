@@ -23,7 +23,7 @@ export default function Vision() {
         <h2 className={`${TYPO.h2} mb-10 text-center`}>VISION</h2>
 
         <div className="space-y-10">
-          {/* 第1章：きっかけ・ルーツ */}
+          {/* 第1章：体験の拡張への興味 */}
           <div className="relative border-l-2 border-orange-200/30 pl-6">
             <h3
               className={`${TYPO.p} mb-2 font-black tracking-tighter text-orange-200 uppercase`}
@@ -31,11 +31,11 @@ export default function Vision() {
               01. The Origin
             </h3>
             <p className={`${TYPO.h3} mb-1 text-orange-50`}>
-              中学時代に見たミュージックビデオに衝撃を受け、自分でも「人の心を動かす映像」を作りたいと思ったのが全ての始まりです。
+              映像作品やインタラクティブなデジタルアートに衝撃を受け、「自分も人の心を揺さぶるような『体験』を技術で創り出したい」と思ったのがエンジニアを志した原点です。
             </p>
           </div>
 
-          {/* 第2章：現在のこだわり */}
+          {/* 第2章：情報連携の学びと、フロントエンド/3Dの融合 */}
           <div className="relative border-l-2 border-orange-200/30 pl-6">
             <h3
               className={`${TYPO.p} mb-2 font-black tracking-tighter text-orange-200 uppercase`}
@@ -43,11 +43,11 @@ export default function Vision() {
               02. My Belief
             </h3>
             <p className={`${TYPO.h3} mb-1 text-orange-50`}>
-              現在はINIADでプログラミングを学びつつ、3DとWebを融合させた新しい表現を模索しています。「技術は人を驚かせるための魔法」だと信じて、細部のクオリティに妥協しない制作を心がけています。
+              大学では情報連携やシステム構築の基礎を固めつつ、個人ではWebと3Dを用いた新しい表現を模索しています。単に美しい見た目を作るだけでなく、それを支える堅牢でパフォーマンスの高いWebアプリケーション開発にこだわりを持っています。
             </p>
           </div>
 
-          {/* 第3章：これからの夢 */}
+          {/* 第3章：チームラボの理念「境界のない」「共創」を連想させる未来像 */}
           <div className="relative border-l-2 border-orange-200/30 pl-6">
             <h3
               className={`${TYPO.p} mb-2 font-black tracking-tighter text-orange-200 uppercase`}
@@ -55,7 +55,7 @@ export default function Vision() {
               03. The Future
             </h3>
             <p className={`${TYPO.h3} mb-1 text-orange-50`}>
-              将来は、Webと3Dの境界線をなくすようなテクニカルアーティストとして、世界中の人が没入できるデジタルワールドを創造するのが目標です。
+              デジタルとリアルの「境界」をなくすような、新しい体験の基盤を創るWebエンジニアになることが目標です。多様な専門性を持つ人たちとのチームでの「共創」を通じて、世界中を驚かせるようなシステムを手がけたいです。
             </p>
           </div>
         </div>

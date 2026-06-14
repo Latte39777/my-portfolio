@@ -17,6 +17,17 @@ const projects = [
     url: "https://todo-project-ac286.web.app",
   },
   {
+    title: "NumberTalk",
+    desc: "React / TypeScript / Supabase / Vercel / Schema",
+    url: "https://my-ito-app.vercel.app/",
+    thumbnail: "/works/numberTalk.png",
+  },
+  {
+    title: "Original 3D Character 'Kon'",
+    desc: "Blender / Substance Painter",
+    url: "https://skfb.ly/pKVVB",
+  },
+  {
     title: "二次創作 Music Video",
     desc: "Blender & DaVinci Resolve",
     url: "https://youtu.be/NtI8tBV_oWk?si=-rYpUfEUSW_l5Xlb",

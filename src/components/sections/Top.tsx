@@ -11,7 +11,7 @@ export default function Top() {
           KOTARO MISAWA<span className="text-cyan-400"> .</span>
         </h1>
         <h2 className="mt-4 text-lg font-medium text-slate-800 drop-shadow-[0_2px_2px_rgba(255,255,255,0.8)] md:text-2xl">
-          Creative Developer / 3D Artist
+          Web Application Engineer / Creative Developer
         </h2>
         <div className="mt-6 h-1 w-40 bg-cyan-400 md:mt-8 md:w-100"></div>
       </div>

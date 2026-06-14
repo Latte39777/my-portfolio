@@ -1,37 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Site
 
-## Getting Started
+個人開発のポートフォリオ兼、3D技術とWebアプリケーション開発の実験的プロダクトです。
 
-First, run the development server:
+## 概要 (Overview)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Webと3Dの境界をなくすインタラクティブな表現と、堅牢なWebアプリケーション構築の共存を目指して開発しました。ユーザーが直感的に体験できる空間設計と、エンジニアとしての基礎力を示すことを目的としています。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 使用技術 (Tech Stack)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS
+- **3D / Graphics:** Three.js, React Three Fiber (R3F), Blender
+- **Deployment:** Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 工夫した点・技術的挑戦 (Technical Highlights)
 
-## Learn More
+### 1. 3DとUIの融合 (High Performance 3D)
 
-To learn more about Next.js, take a look at the following resources:
+- **パフォーマンス最適化:** モデルのGLB化とテクスチャのWebP圧縮、およびdracoデコーダーの導入により、モバイル環境でも軽量なローディングを実現しました。
+- **マテリアル設計:** Substance PainterでベイクしたEmissiveテクスチャを活用し、軽量なマテリアル設定でリッチな表現を実装しました。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. インタラクティブな体験設計
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **React Three Fiberの活用:** 3DオブジェクトとDOM要素のシームレスな統合を行い、スクロールに応じたカメラワークやアニメーションを実装しました。
 
-## Deploy on Vercel
+### 3. 実装
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **設計:** 大学のプロジェクトで培ったDB設計（正規化・スキーマ設計）やネットワークの基礎知識を意識し、保守性の高いコードベースを維持しています。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# my-portfolio
+## ディレクトリ構成 (Directory Structure)
+
+- `app/` : ページルーティングとUIロジック
+- `components/` : Three.jsモデルコンポーネントと再利用可能なUIパーツ
+- `public/` : 3Dモデルデータおよび圧縮済みテクスチャ
+
+## License
+
+MIT

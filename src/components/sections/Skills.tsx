@@ -3,18 +3,36 @@
 import { TYPO } from "@/lib/constants";
 import { motion } from "framer-motion";
 
-const codingSkills = [
-  { name: "HTML / CSS", level: 90 },
-  { name: "JavaScript", level: 85 },
-  { name: "TypeScript", level: 80 },
-  { name: "Python", level: 70 },
-  { name: "React / Next.js", level: 75 },
-];
-
-const creatorSkills = [
-  { name: "Blender", level: 65 },
-  { name: "DaVinci Resolve", level: 60 },
-  { name: "Three.js / R3F", level: 55 },
+const techStack = [
+  {
+    category: "Web Application",
+    items: [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "WebSocket",
+      "Java (Android Studio)",
+    ],
+  },
+  {
+    category: "Data & AI",
+    items: [
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "Scikit-learn",
+      "Django",
+    ],
+  },
+  {
+    category: "Infrastructure & DB",
+    items: ["Docker", "GCP (GCE)", "SQL", "MongoDB", "DB Design (2PL, Schema)"],
+  },
+  {
+    category: "Fundamental",
+    items: ["Network Analysis (Wireshark)", "System Architecture"],
+  },
 ];
 
 export default function Skills() {
@@ -22,74 +40,49 @@ export default function Skills() {
     <section
       id="skills"
       className="absolute left-0 flex min-h-screen w-full items-center justify-center p-4 md:justify-start md:pl-32"
-      style={{
-        top: "860vh",
-        transform: "translateY(-50%)",
-      }}
+      style={{ top: "860vh", transform: "translateY(-50%)" }}
     >
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         whileInView={{ x: 0, opacity: 1 }}
-        viewport={{ once: false, amount: 0.4 }}
+        viewport={{ once: false, amount: 0.3 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-2xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 p-8 text-white shadow-2xl backdrop-blur-md md:p-12"
+        className="w-full max-w-3xl rounded-[3rem] border-[4px] border-white/20 bg-[#5d4037]/90 p-10 text-white shadow-2xl backdrop-blur-md md:p-16"
       >
-        <h2 className={`${TYPO.h2} mb-8 text-center`}>SKILLS</h2>
+        <h2 className={`${TYPO.h2} mb-12 text-center`}>SKILLS & BACKGROUND</h2>
 
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Coding */}
-          <div>
-            <h3 className={`${TYPO.h3} mb-6 flex items-center gap-2`}>
-              <span className="opacity-80">💻</span> Coding
-            </h3>
-            <div className="flex flex-col gap-5">
-              {codingSkills.map((skill, index) => (
-                <div key={index} className="w-full">
-                  <div className="mb-2 flex justify-between px-1 text-xs font-black tracking-tighter text-orange-100/80 uppercase">
-                    <span>{skill.name}</span>
-                    <span>{skill.level}%</span>
-                  </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full border border-white/5 bg-white/10 shadow-inner">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-orange-300 to-orange-500"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1.5, delay: 0.2 }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Creator */}
-          <div>
-            <h3 className={`${TYPO.h3} mb-6 flex items-center gap-2`}>
-              <span className="opacity-80">🎨</span> Creator
-            </h3>
-            <div className="flex flex-col gap-5">
-              {creatorSkills.map((skill, index) => (
-                <div key={index} className="w-full">
-                  <div className="mb-2 flex justify-between px-1 text-xs font-black tracking-tighter text-orange-100/80 uppercase">
-                    <span>{skill.name}</span>
-                    <span>{skill.level}%</span>
-                  </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full border border-white/5 bg-white/10 shadow-inner">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-orange-100 to-orange-300"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1.5, delay: 0.4 }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* チームプロジェクトへの言及 */}
+        <div className="mb-12 border-l-4 border-cyan-400 pl-6">
+          <p className="mb-1 text-sm font-bold tracking-widest text-cyan-200 uppercase">
+            Current Project
+          </p>
+          <p className="text-lg font-bold">
+            少子高齢化社会の課題解決に向けたWebアプリケーション開発
+          </p>
+          <p className="mt-2 text-sm opacity-80">
+            IT技術を用いた社会課題解決を目指し、チーム開発をリードしています。
+          </p>
         </div>
 
-        <div className={`mt-10 ${TYPO.label}`}>
-          Also learning: AWS, Docker, Unity, Unreal Engine
+        {/* スキル一覧 */}
+        <div className="grid gap-8 md:grid-cols-2">
+          {techStack.map((stack, index) => (
+            <div key={index} className="space-y-4">
+              <h3 className="text-xl font-black tracking-tighter text-orange-200 uppercase">
+                {stack.category}
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {stack.items.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-bold"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </motion.div>
     </section>
