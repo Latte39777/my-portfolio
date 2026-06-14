@@ -1,16 +1,11 @@
 "use client";
 
 import * as THREE from "three";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  ScrollControls,
-  Scroll,
-  Environment,
-  useScroll,
-} from "@react-three/drei";
+import { ScrollControls, Scroll, useScroll } from "@react-three/drei";
 
-import { Model } from "./Room";
+import { Model } from "./Fini";
 import CameraHandler from "@/components/CameraHandler";
 import Top from "@/components/sections/Top";
 import Works from "@/components/sections/Works";
@@ -22,13 +17,16 @@ import { useTheme } from "next-themes";
 
 function ColorShift() {
   const scroll = useScroll();
-  const colorBlue = new THREE.Color("#5b9cff");
-  const colorPink = new THREE.Color("#ffd1dc");
+  const colorBlue = useRef(new THREE.Color("#5b9cff"));
+  const colorPink = useRef(new THREE.Color("#ffd1dc"));
+  const backgroundColor = useRef(new THREE.Color("#5b9cff"));
 
   useFrame((state) => {
     const offset = scroll.offset;
     const t = THREE.MathUtils.smoothstep(offset, 0.45, 0.7);
-    state.scene.background = colorBlue.clone().lerp(colorPink, t);
+    state.scene.background = backgroundColor.current
+      .copy(colorBlue.current)
+      .lerp(colorPink.current, t);
   });
   return null;
 }
@@ -39,21 +37,13 @@ export default function Scene() {
   return (
     <Canvas
       camera={{ position: [5, 5, 5], fov: 45 }}
-      dpr={0.5}
+      dpr={[1, 2]}
       gl={{
         localClippingEnabled: true,
-        antialias: false,
+        antialias: true,
         powerPreference: "high-performance",
       }}
     >
-      <ambientLight intensity={1.5} color={isDark ? "#7979b6" : "#ffffff"} />
-      <pointLight position={[-10, -5, -10]} intensity={1} color="#ffffff" />
-      <Environment
-        preset={isDark ? "night" : "city"}
-        environmentIntensity={1}
-        background={false}
-      />
-
       <Suspense fallback={null}>
         <ScrollControls pages={10.5} damping={0.1}>
           <Model isDark={isDark} />

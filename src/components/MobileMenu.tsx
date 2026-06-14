@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SocialLinks from "@/components/SocialLinks";
 import { Icons } from "@/components/ui/icons";
 import dynamic from "next/dynamic";
@@ -13,26 +13,45 @@ const ThemeToggle = dynamic(() => import("@/components/ThemeToggle"), {
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isRippling, setIsRippling] = useState(false);
+  const rippleTimeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = isOpen ? "hidden" : "auto";
     return () => {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    return () => {
+      if (rippleTimeoutRef.current !== null) {
+        window.clearTimeout(rippleTimeoutRef.current);
+      }
+    };
+  }, []);
+
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((current) => !current);
     setIsRippling(true);
-    setTimeout(() => setIsRippling(false), 500);
+    if (rippleTimeoutRef.current !== null) {
+      window.clearTimeout(rippleTimeoutRef.current);
+    }
+    rippleTimeoutRef.current = window.setTimeout(
+      () => setIsRippling(false),
+      500
+    );
   };
 
   return (
     <div className="md:hidden">
       {/* --- トリガーボタン（パズルピース） --- */}
       <button
+        type="button"
         className="fixed right-8 bottom-8 z-[60] rounded-full border border-white/20 bg-[#5d4037] p-3 text-white shadow-2xl outline-none"
         onClick={toggleMenu}
+        aria-expanded={isOpen}
+        aria-label="メニューを開閉"
       >
         {isRippling && (
           <span className="absolute inset-0 z-[-1] animate-ping rounded-full bg-orange-200/40 opacity-75" />

@@ -1,33 +1,40 @@
 "use client";
 
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useEffect, useState } from "react";
 import { Text } from "@react-three/drei";
-import * as THREE from "three";
-
-type TextMesh = THREE.Mesh & { text: string };
 
 export function DigitalClock() {
-  const textRef = useRef<TextMesh>(null);
-  useFrame(() => {
-    if (!textRef.current) return;
-
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString("ja-JP", {
+  const [timeStr, setTimeStr] = useState(() =>
+    new Date().toLocaleTimeString("ja-JP", {
       hour12: false,
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
-    });
+    })
+  );
 
-    if (textRef.current.text !== timeStr) {
-      textRef.current.text = timeStr;
-    }
-  });
+  useEffect(() => {
+    const updateClock = () => {
+      setTimeStr(
+        new Date().toLocaleTimeString("ja-JP", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
+    };
+
+    const timerId = window.setInterval(updateClock, 1000);
+    updateClock();
+
+    return () => {
+      window.clearInterval(timerId);
+    };
+  }, []);
 
   return (
     <Text
-      ref={textRef}
       position={[0, 0, 0.051]}
       fontSize={0.06}
       color="#464646"
@@ -44,6 +51,7 @@ export function DigitalClock() {
         emissiveIntensity={10}
         toneMapped={false}
       />
+      {timeStr}
     </Text>
   );
 }

@@ -77,9 +77,9 @@ export function MusicParticles() {
   const count = 2;
 
   const [positions] = useState<[number, number, number][]>(() => {
-    const centerX = 0.424;
-    const centerY = 1.105;
-    const centerZ = -1.162;
+    const centerX = 0;
+    const centerY = 0;
+    const centerZ = 0;
 
     return Array.from({ length: count }, () => [
       centerX + (Math.random() - 0.5) * 0.1,
