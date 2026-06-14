@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { ScrollControls, Scroll, useScroll } from "@react-three/drei";
 import { useTheme } from "next-themes";
@@ -31,6 +31,19 @@ function ColorShift() {
 export default function Scene() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const onResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
 
   return (
     <Canvas
@@ -48,7 +61,7 @@ export default function Scene() {
       <ambientLight intensity={1} color="#ffffff" />
 
       <Suspense fallback={null}>
-        <ScrollControls pages={10.5} damping={0.1}>
+        <ScrollControls pages={isMobile ? 9 : 10.5} damping={0.1}>
           <Model isDark={isDark} />
           <CameraHandler />
           <ColorShift />
